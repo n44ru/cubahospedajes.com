@@ -1,0 +1,194 @@
+<div class="col-md-12">
+    {# Donde aparece todo #}
+    <form method="post">
+        <input type="hidden" name="finder" value="finder">
+        <div class="col-md-10">
+            <div class="col-md-3 form-group fd-hidden" id="zestados">
+                <label> Estados </label>
+                <select class="form-control" name="estado" id="_f_estados">
+                    <option value="">Seleccione...</option>
+                    {% for e in estados %}
+                        <option value="{{ e.id }}">{{ e.estado }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="znombre">
+                <label> Nombre </label>
+                <input class="form-control" type="text" name="nombre" id="_f_nombre">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zpais">
+                <label> Pais </label>
+                <input class="form-control" type="text" name="pais" id="_f_pais">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zemail">
+                <label> E-Mail </label>
+                <input class="form-control" type="text" name="email" id="_f_email">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zfecha1">
+                <label> Fecha </label>
+                <input class="form-control" name="fecha1" id="fecha_dual" autocomplete="off"/>
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zhora">
+                <label> Hora Llegada </label>
+                <input class="form-control" type="text" name="hora" id="_f_hora">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zguest">
+                <label> Cant. Personas </label>
+                <input class="form-control" type="text" name="guest" id="_f_cp">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zcanthab">
+                <label> Cant. Habitaciones </label>
+                <input class="form-control" type="text" name="rooms" id="_f_canthab">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zdatosvuelo">
+                <label> Datos del Vuelo </label>
+                <input class="form-control" type="text" name="datosvuelo" id="_f_datosvuelo">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="ztelefono">
+                <label> Telefono </label>
+                <input class="form-control" type="text" name="telefono" id="_f_telefono">
+            </div>
+            <div class="col-md-3 form-group fd-hidden" id="zcomentarios">
+                <label> Comentarios </label>
+                <input class="form-control" type="text" name="comentarios" id="_f_comentarios">
+            </div>
+        </div>
+        <div class="col-md-2">
+            <div class="btn-group">
+                <input type="submit" class="btn btn-primary" value="Filtrar">
+                <button data-toggle="dropdown" class="btn btn-primary dropdown-toggle" data-placeholder="false"><span
+                            class="caret"></span></button>
+                <ul class="dropdown-menu">
+                    <li><input type="checkbox" id="_estados" name="festados" value="estados" onclick="marcar()"><label
+                                for="_estados">Estados</label></li>
+
+                    <li><input type="checkbox" id="_nombre" name="fnombre" value="nombre" onclick="marcar()"><label
+                                for="_nombre">Nombre</label></li>
+
+                    <li><input type="checkbox" id="_pais" name="fpais" value="pais" onclick="marcar()"><label
+                                for="_pais">Pais</label></li>
+
+                    <li><input type="checkbox" id="_email" name="femail" value="email" onclick="marcar()"><label
+                                for="_email">E-Mail</label></li>
+
+                    <li><input type="checkbox" id="_fecha1" name="ffecha1" value="fecha1" onclick="marcar()"><label
+                                for="_fecha1">Fechas</label></li>
+
+                    <li><input type="checkbox" id="_hora" name="fhora" value="hora" onclick="marcar()"><label
+                                for="_hora">Hora Llegada</label></li>
+
+                    <li><input type="checkbox" id="_guest" name="fguest" value="guest" onclick="marcar()"><label
+                                for="_guest">Cant. Pers</label></li>
+
+                    <li><input type="checkbox" id="_rooms" name="frooms" value="rooms" onclick="marcar()"><label
+                                for="_rooms">Cant. Hab</label></li>
+
+                    <li><input type="checkbox" id="_datosvuelo" name="fdatosvuelo" value="datosvuelo"
+                               onclick="marcar()"><label for="_datosvuelo">Datos Vuelo</label></li>
+
+                    <li><input type="checkbox" id="_telef" name="ftele" value="telefono" onclick="marcar()"><label
+                                for="_telef">Telefono</label></li>
+
+                    <li><input type="checkbox" id="_coment" name="fcoment" value="comentario" onclick="marcar()"><label
+                                for="_coment">Comentario</label></li>
+                </ul>
+            </div>
+        </div>
+    </form>
+</div>
+{# Fin #}
+<div class="clearfix"></div>
+<hr>
+<script>
+    function marcar() {
+        /* */
+        var estado = document.getElementById("_estados").checked;
+        if (estado) {
+            document.getElementById("zestados").style.display = "block";
+        }
+        else {
+            document.getElementById("zestados").style.display = "none";
+        }
+        /* */
+        /* */
+        var nombre = document.getElementById("_nombre").checked;
+        if (nombre) {
+            document.getElementById("znombre").style.display = "block";
+        }
+        else {
+            document.getElementById("znombre").style.display = "none";
+        }
+        /* */
+        var pais = document.getElementById("_pais").checked;
+        if (pais) {
+            document.getElementById("zpais").style.display = "block";
+        }
+        else {
+            document.getElementById("zpais").style.display = "none";
+        }
+        /* */
+        var email = document.getElementById("_email").checked;
+        if (email) {
+            document.getElementById("zemail").style.display = "block";
+        }
+        else {
+            document.getElementById("zemail").style.display = "none";
+        }
+        /* */
+        var fecha1 = document.getElementById("_fecha1").checked;
+        if (fecha1) {
+            document.getElementById("zfecha1").style.display = "block";
+        }
+        else {
+            document.getElementById("zfecha1").style.display = "none";
+        }
+        /* */
+        var hora = document.getElementById("_hora").checked;
+        if (hora) {
+            document.getElementById("zhora").style.display = "block";
+        }
+        else {
+            document.getElementById("zhora").style.display = "none";
+        }
+        /* */
+        var guest = document.getElementById("_guest").checked;
+        if (guest) {
+            document.getElementById("zguest").style.display = "block";
+        }
+        else {
+            document.getElementById("zguest").style.display = "none";
+        }
+        /* */
+        var room = document.getElementById("_rooms").checked;
+        if (room) {
+            document.getElementById("zcanthab").style.display = "block";
+        }
+        else {
+            document.getElementById("zcanthab").style.display = "none";
+        }
+        /* */
+        var datos = document.getElementById("_datosvuelo").checked;
+        if (datos) {
+            document.getElementById("zdatosvuelo").style.display = "block";
+        }
+        else {
+            document.getElementById("zdatosvuelo").style.display = "none";
+        }
+        /* */
+        var telef = document.getElementById("_telef").checked;
+        if (telef) {
+            document.getElementById("ztelefono").style.display = "block";
+        }
+        else {
+            document.getElementById("ztelefono").style.display = "none";
+        }
+        /* */
+        var comm = document.getElementById("_coment").checked;
+        if (comm) {
+            document.getElementById("zcomentarios").style.display = "block";
+        }
+        else {
+            document.getElementById("zcomentarios").style.display = "none";
+        }
+    }
+</script>

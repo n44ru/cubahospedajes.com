@@ -1,0 +1,191 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    <div class="col-md-12">
+        <hr>
+        <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+            Insertar </a>
+        <hr>
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th> Puntos </th>
+                <th> Idioma </th>
+                <th> Nombre </th>
+                <th> Direccion </th>
+                <th> Texto </th>
+                <th> Meta Title </th>
+                <th> Meta Description </th>
+                <th> Meta Keyword </th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set i =0 %}
+            {% for items in puntostrans %}
+                <tr>
+                    <td> {{ items.puntosid.nombre }} </td>
+                    <td> {{ items.idiomasid.idioma }} </td>
+                    <td> {{ items.texto1 | slice(0, 20) }} </td>
+                    <td> {{ items.texto2 | slice(0, 20) }} </td>
+                    <td> {{ items.texto3 | slice(0, 20) }} </td>
+                    <td> {{ items.texto4 | slice(0, 20) }} </td>
+                    <td> {{ items.texto5 | slice(0, 20) }} </td>
+                    <td> {{ items.texto6 | slice(0, 20) }} </td>
+                    <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                           title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                           title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+                <!-- Modal para editar Destinos-->
+                <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Editar Traduccion de Puntos</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post">
+                                    <input type="hidden" name="id" value="{{ items.id }}"/>
+                                    <div class="form-group">
+                                        <label for="_casa"> Nombre <span class="required">*</span></label>
+                                        <textarea class="form-control" name="nombre_editar" id="_casa">{{ items.texto1 }}</textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_dir"> Direcci&oacute;n <span class="required">*</span></label>
+                                        <textarea class="form-control" name="direccion" id="_dir">{{ items.texto2 }}</textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_texto"> Texto <span class="required">*</span></label>
+                                        <textarea class="form-control" name="texto" id="_texto">{{ items.texto3 }}</textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label> META Title <span class="required">*</span></label>
+                                        <textarea class="form-control" name="metatitle">{{ items.texto4 }}</textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label> META DESC <span class="required">*</span></label>
+                                        <textarea class="form-control" name="metadesc">{{ items.texto5 }}</textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label> META KEYWORD <span class="required">*</span></label>
+                                        <textarea class="form-control" name="metakeyword">{{ items.texto6 }}</textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="comment-form-author">
+                                        <div class="submit-btn">
+                                            <input class="btn btn-primary" type="submit" value="Actualizar">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Eliminar Idiomas</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta acci&oacute;n eliminar&aacute; su tracucci&oacute;n,
+                                Est&aacute; usted realmente seguro?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                <a href="{{ path('puntostrans_eliminar',{'id': items.id})}}"><button type="button" class="btn btn-primary">S&iacute;</button></a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                <!-- Modal -->
+                {% set i = i + 1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+    <!-- Modal para insertar Traducciones -->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Insertar Traducciones de Puntos</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="form-group">
+                            <label> Seleccione el Punto de Intere&eacute;s </label>
+                            <select  class="form-control" name="puntoid">
+                                <option value="">Buscar...</option>
+                                {% for items in puntos %}
+                                    <option value="{{ items.id }}">{{ items.subdestinosid.destinoid.nombre }} / {{ items.subdestinosid.nombre }} / {{ items.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label> Seleccione el Idioma </label>
+                            <select  class="form-control" name="idioma">
+                                <option value="">Buscar...</option>
+                                {% for items in idiomas %}
+                                    <option value="{{ items.id }}"> {{ items.idioma }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label for="_casa"> Nombre <span class="required">*</span></label>
+                            <textarea class="form-control" name="nombre" id="_casa"></textarea>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label for="_dir"> Direcci&oacute;n <span class="required">*</span></label>
+                            <textarea class="form-control" name="direccion" id="_dir"></textarea>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label for="_texto"> Texto <span class="required">*</span></label>
+                            <textarea class="form-control" name="texto" id="_texto"></textarea>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label> META Title <span class="required">*</span></label>
+                            <textarea class="form-control" name="metatitle"></textarea>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label> META DESC <span class="required">*</span></label>
+                            <textarea class="form-control" name="metadesc"></textarea>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label> META KEYWORD <span class="required">*</span></label>
+                            <textarea class="form-control" name="metakeyword"></textarea>
+                        </div>
+                        <BR>
+                        <div class="comment-form-author">
+                            <div class="submit-btn">
+                                <input class="btn btn-primary" type="submit" value="Insertar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

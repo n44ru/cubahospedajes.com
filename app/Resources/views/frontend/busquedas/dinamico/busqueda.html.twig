@@ -1,0 +1,80 @@
+{% block dinamico %}
+    <ul class="aa-properties-nav">
+        {% set j=0 %}
+        {% for items in casas %}
+            <li>
+                <article class="aa-properties-item">
+                    <a class="aa-properties-item-img">
+                        <div id="carousel-example-generic-{{ j }}" class="carousel slide">
+                            <div class="carousel-inner">
+                                {% set i=0 %}
+                                {% for items2 in imagenes %}
+                                    {% if  items2.casaid.id == items.id %}
+                                        <div class="item {% if i == 0 %}active{% endif %}">
+                                            <img alt="img" src="{{ items2.imagen |  imagine_filter('detalles_view') }}">
+                                        </div>
+                                        {% set i=i+1 %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                            <a class="left carousel-control" href="#carousel-example-generic-{{ j }}" data-slide="prev">
+                                <span class="icon-prev"></span>
+                            </a>
+                            <a class="right carousel-control" href="#carousel-example-generic-{{ j }}"
+                               data-slide="next">
+                                <span class="icon-next"></span>
+                            </a>
+                        </div>
+                    </a>
+                    {% set flag = 'false' %}
+                    {% for i in reservadas %}
+                        {% if i.ocupadaid == items.id and flag == 'false' %}
+                            <div class="aa-tag sold-out">
+                                {{ 'search.ocupada' | trans({}, 'base') }}
+                            </div>
+                            {% set flag = 'true' %}
+                        {% endif %}
+                        {% if i.ocupadaid != items.id and flag == 'false' %}
+                            <div class="aa-tag for-rent">
+                                {{ 'search.noocupada' | trans({}, 'base') }}
+                            </div>
+                            {% set flag = 'true' %}
+                        {% endif %}
+                    {% endfor %}
+                    {% if flag=='false' %}
+                        <div class="aa-tag for-rent">
+                            {{ 'search.noocupada' | trans({}, 'base') }}
+                        </div>
+                    {% endif %}
+                    {% set slug1 = slugger.slugify(items.subdestinosid.destinoid.nombre) %}
+                    {% set slug2 = slugger.slugify(items.subdestinosid.nombre) %}
+                    {% set slug3 = slugger.slugify(items.nombre) %}
+                    <div class="aa-properties-item-content">
+                        <div class="aa-properties-info">
+                            <span>{{ items.cuartos }} {{ 'casas.cuartos' | trans({}, 'base') }}</span>
+                            <span>{{ items.bath }} {{ 'casas.bath' | trans({}, 'base') }}</span>
+                            <span>{{ items.capacidad }} {{ 'casas.capacidad' | trans({}, 'base') }}</span>
+                        </div>
+                        <div class="aa-properties-about">
+                            <p><strong><a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.nombre }}
+                                        - {{ items.subdestinosid.nombre }}
+                                        - {{ items.subdestinosid.destinoid.nombre }}</a></strong></p>
+                            <p>{{ items.direccion }}</p>
+                        </div>
+                        <div class="aa-properties-detial">
+                                                    <span class="aa-price red_text">
+                                                        ${{ items.precio }}{{ 'search.cuc' | trans({}, 'base') }}
+                                                    </span>
+                        </div>
+                        <div class="aa-properties-detial">
+                            <a class="aa-secondary-btn" href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">
+                                {{ 'casas.ver_detalles' | trans({}, 'base') }}
+                            </a>
+                        </div>
+                    </div>
+                </article>
+            </li>
+            {% set j = j + 1 %}
+        {% endfor %}
+    </ul>
+{% endblock %}

@@ -1,0 +1,172 @@
+{% extends 'base_frontend_detalles.html.twig' %}
+
+{% block body %}
+    <div class="parent">
+        <ul id="flexiselDemo3">
+            {% set m = 0 %}
+            {% for items in img_puntos %}
+                {% if items.puntosid.id == punto.id %}
+                    <li>
+                        <img src="{{ items.imagen |  imagine_filter('banner_crop') }}" alt="{{ items.tags }}"
+                             class="banner_detalles">
+                    </li>
+                {% endif %}
+                {% set m = m + 1 %}
+            {% endfor %}
+        </ul>
+    </div>
+    <section id="aa-properties">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <section id="aa-gallery">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <h3>{{ punto.nombre }}</h3>
+                                    <h4>{{ punto.subdestinosid.destinoid.nombre }}
+                                        / {{ punto.subdestinosid.nombre }}</h4>
+                                    <p>{{ punto.texto }}</p>
+                                    <BR>
+                                    <i class="glyphicon glyphicon-map-marker"></i><strong>{{ punto.direccion }}</strong>
+                                    {% if coo %}
+                                    <div id="googleMap" class="mapa_google"></div>
+                                    {% endif %}
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="aa-gallery-area">
+                                        <div class="aa-gallery-content">
+                                            <div id="mixit-container" class="aa-gallery-body">
+                                                {% for items in img_puntos %}
+                                                    <div class="aa-single-gallery">
+                                                        <div class="aa-single-gallery-item">
+                                                            {% if items.puntosid.id == punto.id %}
+                                                                <div class="aa-single-gallery-img">
+                                                                    <a><img src="{{ items.imagen |  imagine_filter('gallery_view') }}"
+                                                                            alt="img" class="img-thumbnail"></a>
+                                                                </div>
+                                                                <div class="aa-single-gallery-info">
+                                                                    <a class="fancybox" data-fancybox-group="gallery"
+                                                                       href="{{ asset(items.imagen) }}"><span
+                                                                                class="fa fa-eye"></span></a>
+                                                                </div>
+                                                            {% endif %}
+                                                        </div>
+                                                    </div>
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-latest-property">
+        <div class="container">
+            <div class="aa-latest-property-area">
+                <div class="aa-title">
+                    <h2>{{ 'casas.cercanas' | trans({}, 'base') }} ({{ casas | length }})</h2>
+                    <span></span>
+                </div>
+                <div class="aa-latest-properties-content">
+                    <div class="row">
+                        {% for items in casas | slice(0,9) %}
+                            <div class="col-md-4">
+                                {% set slug1 = slugger.slugify(items.subdestinosid.destinoid.nombre) %}
+                                {% set slug2 = slugger.slugify(items.subdestinosid.nombre) %}
+                                {% set slug3 = slugger.slugify(items.nombre) %}
+                                <article class="aa-properties-item">
+                                    <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                       class="aa-properties-item-img">
+                                        {% set found='false' %}
+                                        {% for items2 in img_casas %}
+                                            {% if  items2.casaid.id == items.id and found=='false' %}
+                                                <img class="img_casa" alt="img"
+                                                     src="{{ asset(items2.imagen |  imagine_filter('detalles_view') ) }}">
+                                                {% set found='true' %}
+                                            {% endif %}
+                                        {% endfor %}
+                                    </a>
+                                    <div class="aa-tag for-sale">
+                                        {{ 'search.noocupada' | trans({}, 'base') }}
+                                    </div>
+                                    <div class="aa-properties-item-content">
+                                        <div class="aa-properties-info">
+                                            <span>{{ items.cuartos }} {{ 'casas.cuartos' | trans({}, 'base') }}</span>
+                                            <span>{{ items.bath }} {{ 'casas.bath' | trans({}, 'base') }}</span>
+                                            <span>{{ items.capacidad }} {{ 'casas.capacidad' | trans({}, 'base') }}</span>
+                                        </div>
+                                        <div class="aa-properties-about">
+                                            <h4>
+                                                <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.nombre }}
+                                                    - {{ items.subdestinosid.nombre }}</a>
+                                            </h4>
+                                            <p>{{ items.direccion }}</p>
+                                        </div>
+                                        <div class="aa-properties-detial">
+                            <span class="aa-price red_text">
+                                ${{ items.precio }}{{ 'search.cuc' | trans({}, 'base') }}
+                            </span>
+                                            <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                               class="aa-secondary-btn">{{ 'casas.ver_detalles' | trans({}, 'base') }}</a>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                        {% endfor %}
+                    </div>
+                    <BR><BR>
+                    <div class="aa-latest-property-area">
+                        <div class="aa-title">
+                            <h2>{{ 'puntos.cercanos' | trans({}, 'base') }} ({{ puntos | length }})</h2>
+                            <span></span>
+                        </div>
+                        <div class="aa-latest-properties-content">
+                            <div class="row">
+                                {% for items in puntos | slice(0,9) %}
+                                    {% set slug1 = slugger.slugify(items.subdestinosid.destinoid.nombre) %}
+                                    {% set slug2 = slugger.slugify(items.subdestinosid.nombre) %}
+                                    {% set slug3 = slugger.slugify(items.nombre) %}
+                                    <div class="col-md-4">
+                                        <article class="aa-properties-item">
+                                            <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                               class="aa-properties-item-img">
+                                                {% set found='false' %}
+                                                {% for items2 in img_puntos %}
+                                                    {% if  items2.puntosid.id == items.id and found=='false' %}
+                                                        <img class="img_casa" alt="img"
+                                                             src="{{ asset(items2.imagen |  imagine_filter('detalles_view') ) }}">
+                                                        {% set found='true' %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </a>
+                                            <div class="aa-properties-item-content">
+                                                <div class="aa-properties-about">
+                                                    <h4>
+                                                        <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.nombre }}
+                                                            - {{ items.subdestinosid.nombre }} </a>
+                                                    </h4>
+                                                    <p>{{ items.direccion }}</p>
+                                                </div>
+                                                <div class="aa-properties-detial">
+                                                    <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                                       class="aa-secondary-btn">{{ 'casas.ver_detalles' | trans({}, 'base') }}</a>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}
+
+

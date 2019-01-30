@@ -1,0 +1,70 @@
+<section id="aa-client-testimonial">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-client-testimonial-area">
+                    <div class="aa-testimonial-content">
+                        <ul class="aa-testimonial-slider">
+                            {% for items in test %}
+                                <li>
+                                    <div class="aa-testimonial-single">
+                                        {% if items.casaid != '' %}
+                                            {% set slug1 = slugger.slugify(items.casaid.subdestinosid.destinoid.nombre) %}
+                                            {% set slug2 = slugger.slugify(items.casaid.subdestinosid.nombre) %}
+                                            {% set slug3 = slugger.slugify(items.casaid.nombre) %}
+                                            <p>{{ items.casaid.nombre }}</p>
+                                            <div class="aa-testimonial-img">
+                                                {% set found='false' %}
+                                                {% for i in img_casas %}
+                                                    {% if i.casaid.id == items.casaid.id and found == 'false' %}
+                                                        <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">
+                                                            <img src="{{ i.imagen |  imagine_filter('detalles_view') }}"
+                                                                 alt="img"></a>
+                                                        {% set found='true' %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="aa-testimonial-info">
+                                                {% include 'frontend/templates/stars.html.twig' %}
+                                                <p>{{ items.comentario }}</p>
+                                            </div>
+                                            <div class="aa-testimonial-bio">
+                                                <p>{{ items.nombre }}</p>
+                                                <span>{{ items.fecha }}</span>
+                                            </div>
+                                        {% else %}
+                                            {% set slug1 = slugger.slugify(items.puntosid.subdestinosid.destinoid.nombre) %}
+                                            {% set slug2 = slugger.slugify(items.puntosid.subdestinosid.nombre) %}
+                                            {% set slug3 = slugger.slugify(items.puntosid.nombre) %}
+                                            <p>{{ items.puntosid.nombre }}</p>
+                                            <div class="aa-testimonial-img">
+                                                {% set found='false' %}
+                                                {% for i in img_puntos %}
+                                                    {% if i.puntosid.id == items.puntosid.id and found == 'false' %}
+                                                        <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">
+                                                            <img src="{{ i.imagen |  imagine_filter('detalles_view') }}"
+                                                                 alt="img"></a>
+                                                        {% set found='true' %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                            <div class="aa-testimonial-info">
+                                                {% include 'frontend/templates/stars.html.twig' %}
+                                                <p>{{ items.comentario }}</p>
+                                            </div>
+                                            <div class="aa-testimonial-bio">
+                                                <p>{{ items.nombre }}</p>
+                                                <span>{{ items.fecha }}</span>
+                                            </div>
+
+                                        {% endif %}
+                                    </div>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

@@ -1,0 +1,31 @@
+{% block subdestinos %}
+    <div class="input-group">
+    <div class="input-group-addon">
+        <i class="fa fa-map red_text"></i>
+    </div>
+    <select id="_sub" class="form-control" name="subdest">
+        {% if subdestinos != '' %}
+            {% for items in subdestinos %}
+                <option value="{{ items.nombre }}">{{ items.nombre }}</option>
+            {% endfor %}
+        {% else %}
+            <option value="">{{ 'lugares.empty' | trans({}, 'base') }}</option>
+        {% endif %}
+    </select>
+    </div>
+    <script>
+        if(sessionStorage.getItem("subplaces"))
+        {
+            document.getElementById('_sub').value = sessionStorage.getItem("subplaces");
+        }
+        function button_appear() {
+            var subdestinos = document.getElementById('_sub').value;
+            if(subdestinos != null)
+            {
+                document.getElementById('hidden').style.display = "block";
+                document.getElementById('hidden_two').style.display = "block";
+            }
+        }
+        button_appear();
+    </script>
+{% endblock %}

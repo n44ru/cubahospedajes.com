@@ -1,0 +1,45 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2>{{ 'notfound.title' | trans({}, 'base') }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-about-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-about-us-area">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="aa-about-us-right text-center">
+                                    <div class="aa-title">
+                                        <h2>{{ 'notfound.message' | trans({}, 'base') }}</h2>
+                                        <span></span>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <a href="{{ path('homepage') }}"> <button class="btn btn-primary">{{ 'notfound.button1' | trans({}, 'base') }}</button> </a>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <a href="{{ path('casas_todas') }}"> <button class="btn btn-primary">{{ 'notfound.button2' | trans({}, 'base') }}</button> </a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

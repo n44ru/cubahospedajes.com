@@ -1,0 +1,109 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+                <div class="col-md-12">
+                            <hr>
+                            <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+                                Insertar </a>
+                            <hr>
+                            <table class="table dynamic">
+                                <thead>
+                                <tr>
+                                    <th> Idioma </th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set i =0 %}
+                                {% for items in e %}
+                                    <tr>
+                                        <td> {{ items.idioma }} </td>
+                                        <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                                               title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                        <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                                               title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                    </tr>
+                                    <!-- Modal para editar Destinos-->
+                                    <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Editar Idioma</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post">
+                                                        <input type="hidden" name="id" value="{{ items.id }}"/>
+                                                        <div class="form-group">
+                                                            <label for="_i"> Idioma <span class="required">*</span></label>
+                                                            <input class="form-control" name="idioma_editar" id="_i" value="{{ items.idioma }}"/>
+                                                        </div><BR>
+                                                        <BR>
+                                                        <div class="comment-form-author">
+                                                            <div class="submit-btn">
+                                                                <input class="btn btn-primary" type="submit" value="Actualizar">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Eliminar Idiomas</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Cuidado, esta acci&oacute; eliminar&aacute; un idioma de su Base de Datos,
+                                                    Est&aacute; usted realmente seguro?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                    <a href="{{ path('idiomas_eliminar',{'id': items.id})}}"><button type="button" class="btn btn-primary">S&iacute;</button></a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                    <!-- Modal -->
+                                    {% set i = i + 1 %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="clearfix"></div>
+                        </div>
+    <!-- Modal para insertar Coordenadas-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Insertar Idiomas</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="aa-contact-form">
+                        <form method="post" class="contactform">
+                            <div class="form-group">
+                                <label for="_i"> Idioma <span class="required">*</span></label>
+                                <input class="form-control" name="idioma" id="_i" required=""/>
+                            </div><BR>
+                            <BR>
+                            <div class="comment-form-author">
+                                <div class="submit-btn">
+                                    <input class="btn btn-primary" type="submit" value="Insertar">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

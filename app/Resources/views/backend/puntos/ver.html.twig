@@ -1,0 +1,285 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    <div class="col-md-12">
+
+        <hr>
+        <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+            Insertar </a>
+        <hr>
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th> Destino</th>
+                <th> Subdestino</th>
+                <th> Nombre</th>
+                <th> Direcci&oacute;n</th>
+                <th> Texto</th>
+                <th> Portada</th>
+                <th> META Title</th>
+                <th> META Description</th>
+                <th> META Keywords</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set i =0 %}
+            {% for items in puntos %}
+
+                <tr>
+                    {# los puntos pueden tener o no destinos o subdestinos #}
+                    {% if items.subdestinosid != '' %}
+                        <td> {{ items.subdestinosid.destinoid.nombre }} </td>
+                    {% else %}
+                        <td><p class="red_text ">No Tiene</p></td>
+                    {% endif %}
+                    {# #}
+                    {% if items.subdestinosid != '' %}
+                        <td> {{ items.subdestinosid.nombre }} </td>
+                    {% else %}
+                        <td><p class="red_text ">No Tiene</p></td>
+                    {% endif %}
+                    {# #}
+                    <td> {{ items.nombre }} </td>
+                    <td> {{ items.direccion }} </td>
+                    <td> {{ items.texto  | slice(0,50) }}...</td>
+                    <td> {{ items.portada }} </td>
+                    <td>{{ items.metatitle }}</td>
+                    <td>{{ items.metadesc }}</td>
+                    <td>{{ items.metakeyword }}</td>
+                    <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                           title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a class="btn btn-primary" data-toggle="modal" data-placement="top"
+                           title="Im&aacute;genes" href="#myModal_imagen{{ i }}"><i
+                                    class="glyphicon glyphicon-picture"></i></a></td>
+                    <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                           title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+                <!-- Modal para editar Destinos-->
+                <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Editar destinos</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" value="{{ items.id }}"/>
+                                    <div class="form-group">
+                                        <label for="_activa"> Subdestinos </label><br>
+                                            <select name="subdestino" class="js-example-basic-single select2_backend">
+                                            {% if items.subdestinosid != '' %}
+                                                <option value="{{ items.subdestinosid.id }}">{{ items.subdestinosid.nombre }}</option>
+                                            {% else %}
+                                                <option value="">Sin Subdestino.</option>
+                                            {% endif %}
+                                            {% for items in subdestinos %}
+                                                <option value="{{ items.id }}">{{ items.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="_nombre"> Nombre <span class="required">*</span></label>
+                                        <input class="form-control" name="nombre_editar" id="_nombre"
+                                               value="{{ items.nombre }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_dir"> Direcci&oacute;n </label>
+                                        <input class="form-control" name="direccion" id="_dir"
+                                               value="{{ items.direccion }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_texto"> Inserte Datos Adicionales </label>
+                                        <textarea class="form-control input_large" name="texto"
+                                                  id="_texto">{{ items.texto }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="_p"> Sale en la Portada? </label>
+                                        <select id="_p" class="form-control" name="portada">
+                                            <option value="{{ items.portada }}">{{ items.portada }}</option>
+                                            {% if  items.portada == 'Si' %}
+                                                <option value="No">No</option>
+                                            {% else %}
+                                                <option value="Si">Si</option>
+                                            {% endif %}
+                                        </select>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group">
+                                        <label for="_mt"> META Title </label>
+                                        <textarea class="form-control" name="metatitle"
+                                                  id="_mt">{{ items.metatitle }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="_md"> META Description </label>
+                                        <textarea class="form-control" name="metadesc"
+                                                  id="_md">{{ items.metadesc }}</textarea>
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="_mk"> META Keywords </label>
+                                        <textarea class="form-control" name="metakeyword"
+                                                  id="_mk">{{ items.metakeyword }}</textarea>
+                                    </div>
+                                    <hr>
+                                    <div class="form-group">
+                                        <label for="_nombre"> Im&aacute;genes</label>
+                                        <input type="file" name="myfiles[]" multiple>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_tags"> Etiqueta de las Im&aacute;genes </label>
+                                        <input class="form-control" name="tags" id="_tags">
+                                    </div>
+                                    <hr>
+                                    <BR>
+                                    <div class="form-group">
+                                        <div class="submit-btn">
+                                            <input class="btn btn-primary" type="submit" value="Actualizar">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Eliminar Punto de Interes</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea eliminar este Punto de Interes, esto eliminar&aacute; sus
+                                relaciones con Imagenes, Coordenadas y Etiquetas.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                <a href="{{ path('puntos_eliminar',{'id': items.id}) }}">
+                                    <button type="button" class="btn btn-primary">S&iacute;</button>
+                                </a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                      <!-- Modal -->
+                <div class="modal fade" id="myModal_imagen{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Imagenes</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h1> Im&aacute;genes </h1>
+                                {% for items3 in imagenes %}
+                                    {% if items3.puntosid.id == items.id %}
+                                        {% if items3.imagen != '' %}
+                                            <img class="img-thumbnail"
+                                                 src="{{ asset(items3.imagen) }}">
+                                            <p><strong> Etiquetas: </strong> {{ items3.tags }} </p>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% set i = i + 1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+    <!-- Modal para insertar Destinos-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Insertar Puntos de Inter&eacute;s</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <label for="_subdest"> Subdestinos </label><br>
+                            <select name="subdestino" id="_subdest" class="js-example-basic-single select2_backend">
+                                {% for items in subdestinos %}
+                                    <option value="{{ items.id }}">{{ items.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="_nombre"> Nombre <span class="required">*</span></label>
+                            <input class="form-control" name="nombre" id="_nombre" required=""/>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label for="_dir"> Direcci&oacute;n </label>
+                            <input class="form-control" name="direccion" id="_dir"/>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label for="_texto"> Inserte Datos Adicionales </label>
+                            <textarea class="form-control input_large" name="texto" id="_texto"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="_p"> Sale en la Portada? </label>
+                            <select id="_p" class="form-control" name="portada">
+                                <option value="No">No</option>
+                                <option value="Si">Si</option>
+                            </select>
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="_nombre"> Im&aacute;genes</label>
+                            <input type="file" name="myfiles[]" multiple>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <label for="_tags"> Etiqueta de las Im&aacute;genes </label>
+                            <input class="form-control" name="tags" id="_tags">
+                        </div>
+                        <hr>
+                        <div class="form-group">
+                            <label for="_mt"> META Title </label>
+                            <textarea class="form-control" name="metatitle"
+                                      id="_mt"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="_md"> META Description </label>
+                            <textarea class="form-control" name="metadesc"
+                                      id="_md"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="_mk"> META Keywords </label>
+                            <textarea class="form-control" name="metakeyword"
+                                      id="_mk"></textarea>
+                        </div>
+                        <hr>
+                        <BR>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <input class="btn btn-primary" type="submit" value="Insertar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

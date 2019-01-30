@@ -1,0 +1,226 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2></h2>
+                        <ol class="breadcrumb">
+                            <li></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-advance-search">
+        <div class="container">
+            <div class="aa-advance-search-area">
+                <div class="form">
+                    <div class="aa-advance-search-top">
+                        <div class="row">
+                            <form method="get" onsubmit="return Save()" action="{{ path('search_places') }}">
+                                <div class="col-md-12">
+                                    <div class="col-md-3">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-map"></i>
+                                            </div>
+                                            <select id="_destino" name="dest" class="form-control"
+                                                    onchange="return Find_Sub()">
+                                                <option value="">{{ 'lugares.select' | trans({}, 'base') }}</option>
+                                                {% for items in destinos %}
+                                                    <option value="{{ items.nombre }}">{{ items.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div id="sub_dynamic">
+                                            {% block subdestinos %}
+                                            {% endblock %}
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3" id="hidden">
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-pencil"></i>
+                                            </div>
+                                            <input name="text" class="form-control" type="text" id="_texto"
+                                                   placeholder="{{ 'portada.buscar' | trans({}, 'base') }}"
+                                                   autocomplete="off">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2" id="hidden_two">
+                                        <div class="aa-single-advance-search">
+                                            <input type="submit" class="aa-search-btn"
+                                                   value="{{ 'search.buscar' | trans({}, 'base') }}">
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-latest-property">
+        <div class="container">
+            <div class="aa-latest-property-area">
+                <div class="aa-title">
+                    <h2>{{ 'casas.cercanas' | trans({}, 'base') }} ({{ casas | length }})</h2>
+                    <span></span>
+                </div>
+                <div class="aa-latest-properties-content">
+                    <div class="row">
+                        {% set idx = 0 %}
+                        {% for items in casas %}
+                            <div class="col-md-4">
+                                <article class="aa-properties-item">
+                                    <div id="carousel-homes-{{ idx }}" class="carousel slide">
+                                        <div class="carousel-inner">
+                                            {% set z = 0 %}
+                                            {% for items2 in img_casas %}
+                                                {% if  items2.casaid.id == items.id %}
+                                                    <div class="item{% if z == 0 %} active{% endif %}">
+                                                        <img class="img_casa" alt="{{ items2.tags }}"
+                                                             src="{{ asset(items2.imagen |  imagine_filter('detalles_view') ) }}">
+                                                    </div>
+                                                    {% set z = z + 1 %}
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                        <a class="left carousel-control"
+                                           href="#carousel-homes-{{ idx }}"
+                                           data-slide="prev">
+                                            <span class="icon-prev"></span>
+                                        </a>
+                                        <a class="right carousel-control"
+                                           href="#carousel-homes-{{ idx }}"
+                                           data-slide="next">
+                                            <span class="icon-next"></span>
+                                        </a>
+                                    </div>
+                                    {% set slug1 = slugger.slugify(items.subdestinosid.destinoid.nombre) %}
+                                    {% set slug2 = slugger.slugify(items.subdestinosid.nombre) %}
+                                    {% set slug3 = slugger.slugify(items.nombre) %}
+                                    <div class="aa-properties-item-content">
+                                        <div class="aa-properties-info">
+                                            <span>{{ items.cuartos }} {{ 'casas.cuartos' | trans({}, 'base') }}</span>
+                                            <span>{{ items.bath }} {{ 'casas.bath' | trans({}, 'base') }}</span>
+                                            <span>{{ items.capacidad }} {{ 'casas.capacidad' | trans({}, 'base') }}</span>
+                                        </div>
+                                        <div class="aa-properties-about">
+                                            <h4>
+                                                <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.nombre }}
+                                                    - {{ items.subdestinosid.nombre }}</a>
+                                            </h4>
+                                            <p>{{ items.direccion }}</p>
+                                        </div>
+                                        <div class="aa-properties-detial">
+                            <span class="aa-price red_text">
+                                ${{ items.precio }}{{ 'search.cuc' | trans({}, 'base') }}
+                            </span>
+                                            <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                               class="aa-secondary-btn">{{ 'search.verdetalles' | trans({}, 'base') }}</a>
+                                        </div>
+                                    </div>
+                                </article>
+                            </div>
+                            {% set idx = idx + 1 %}
+                        {% endfor %}
+                    </div>
+                    <div class="clearfix"></div>
+                    {% if paginate_houses == 'Si' %}
+                    <div class="navigation">
+                        {{ knp_pagination_render(casas) }}
+                    </div>
+                    {% endif %}
+                    <hr>
+                    <div class="aa-latest-property-area">
+                        <div class="aa-title">
+                            <h2>{{ 'puntos.cercanos' | trans({}, 'base') }} ({{ puntos | length }})</h2>
+                            <span></span>
+                        </div>
+                        <div class="aa-latest-properties-content">
+                            <div class="row">
+                                {% set idj = 0 %}
+                                {% for items in puntos %}
+                                    <div class="col-md-4">
+                                        <article class="aa-properties-item">
+                                            <div id="carousel-poi-{{ idj }}" class="carousel slide">
+                                                <div class="carousel-inner">
+                                                    {% set z = 0 %}
+                                                    {% for items2 in img_puntos %}
+                                                        {% if  items2.puntosid.id == items.id %}
+                                                            <div class="item{% if z == 0 %} active{% endif %}">
+                                                                <img class="img_casa" alt="{{ items2.tags }}"
+                                                                     src="{{ asset(items2.imagen |  imagine_filter('detalles_view') ) }}">
+                                                            </div>
+                                                            {% set z = z + 1 %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <a class="left carousel-control"
+                                                   href="#carousel-poi-{{ idj }}"
+                                                   data-slide="prev">
+                                                    <span class="icon-prev"></span>
+                                                </a>
+                                                <a class="right carousel-control"
+                                                   href="#carousel-poi-{{ idj }}"
+                                                   data-slide="next">
+                                                    <span class="icon-next"></span>
+                                                </a>
+                                            </div>
+                                            <div class="aa-properties-item-content">
+                                                {% set slug1 = slugger.slugify(items.subdestinosid.destinoid.nombre) %}
+                                                {% set slug2 = slugger.slugify(items.subdestinosid.nombre) %}
+                                                {% set slug3 = slugger.slugify(items.nombre) %}
+                                                <div class="aa-properties-about">
+                                                    <h4>
+                                                        <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.nombre }}
+                                                            - {{ items.subdestinosid.nombre }} </a>
+                                                    </h4>
+                                                    <p>{{ items.direccion }}</p>
+                                                </div>
+                                                <div class="aa-properties-detial">
+                                                    <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                                       class="aa-secondary-btn">{{ 'search.verdetalles' | trans({}, 'base') }}</a>
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    {% set idj = idj + 1 %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                        <div class="clearfix"></div>
+                        {% if paginate_places == 'Si' %}
+                        <div class="navigation">
+                            {{ knp_pagination_render(puntos) }}
+                        </div>
+                        {% endif %}
+                        <hr>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function Find_Sub() {
+            var destino = document.getElementById('_destino').value;
+            $("#sub_dynamic").load("{{ path('sub_dynamic') }}", {'destino': destino});
+        }
+        function Save() {
+            var dest = document.getElementById('_destino').value;
+            var sub = document.getElementById('_sub').value;
+            var text = document.getElementById('_texto').value;
+            sessionStorage.setItem("destplaces", dest);
+            sessionStorage.setItem("subplaces", sub);
+            sessionStorage.setItem("textplaces", text);
+        }
+    </script>
+{% endblock %}

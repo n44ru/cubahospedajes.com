@@ -1,0 +1,182 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+                <div class="col-md-12">
+                            <hr>
+                            <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+                                Insertar </a>
+                            <hr>
+                            <table class="table dynamic">
+                                <thead>
+                                <tr>
+                                    <th> T&iacute;tulo </th>
+                                    <th> Asunto </th>
+                                    <th> Mensaje Cliente </th>
+                                    <th> Mensaje Hostal </th>
+                                    <th> Mensaje Admins </th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set i =0 %}
+                                {% for items in e %}
+                                    <tr>
+                                        <td> {{ items.titulo }} </td>
+                                        <td> {{ items.asunto }}</td>
+                                        <td> {{ items.msgcliente }} </td>
+                                        <td> {{ items.msghostal }} </td>
+                                        <td> {{ items.msgadmins }} </td>
+                                        <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                                               title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                        <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                                               title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                    </tr>
+                                    <!-- Modal para editar Destinos-->
+                                    <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Editar Correos</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post">
+                                                        <input type="hidden" name="id" value="{{ items.id }}"/>
+                                                        <div class="form-group">
+                                                            <label for="_nombre"> T&iacute;tulo <span class="required">*</span></label>
+                                                            <input class="form-control" name="titulo_editar" id="_nombre" value="{{ items.titulo }}"/>
+                                                        </div><BR>
+                                                        <div class="form-group">
+                                                            <label for="_nombre"> Asunto <span class="required">*</span></label>
+                                                            <input class="form-control" name="asunto" id="_asunto" value="{{ items.asunto }}"/>
+                                                        </div><BR>
+                                                        <div class="form-group">
+                                                            <label for="_cont1"> Mensaje Cliente <span class="required">*</span></label>
+                                                            <textarea class="form-control min_textarea" name="contenido1" id="_cont1">{{ items.msgcliente }}</textarea>
+                                                        </div>
+                                                        <BR>
+                                                        <div class="form-group">
+                                                            <label for="_cont2"> Mensaje Hostal <span class="required">*</span></label>
+                                                            <textarea class="form-control min_textarea" name="contenido2" id="_cont2">{{ items.msghostal }}</textarea>
+                                                        </div>
+                                                        <BR>
+                                                        <div class="form-group">
+                                                            <label for="_cont3"> Mensaje Admins <span class="required">*</span></label>
+                                                            <textarea class="form-control min_textarea" name="contenido3" id="_cont3">{{ items.msgadmins }}</textarea>
+                                                        </div>
+                                                        <BR>
+                                                        <div class="comment-form-author">
+                                                            <div class="submit-btn">
+                                                                <input class="btn btn-primary" type="submit" value="Actualizar">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Eliminar Etiquetas</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Esta seguro que desea eliminar este Correo, esto eliminar&aacute; su relaci&oacute;n con Estados.
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                    <a href="{{ path('correos_eliminar',{'id': items.id})}}"><button type="button" class="btn btn-primary">S&iacute;</button></a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                    <!-- Modal -->
+                                    {% set i = i + 1 %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="clearfix"></div>
+                        </div>
+    <!-- Modal para insertar Coordenadas-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Insertar Correos</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="aa-contact-form">
+                        <form method="post" class="contactform">
+                            <div class="form-group">
+                                <label for="_nombre"> T&iacute;tulo <span class="required">*</span></label>
+                                <input class="form-control" name="titulo" id="_nombre" required=""/>
+                            </div><BR>
+                            <div class="form-group">
+                                <label for="_nombre"> Asunto <span class="required">*</span></label>
+                                <input class="form-control" name="asunto" id="_asunto" required=""/>
+                            </div><BR>
+                            <div class="form-group">
+                                <label for="_cont1"> Mensaje Cliente <span class="required">*</span></label>
+                                <textarea class="form-control min_textarea" name="contenido1" id="_cont1"></textarea>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_cont2"> Mensaje Hostal <span class="required">*</span></label>
+                                <textarea class="form-control min_textarea" name="contenido2" id="_cont2"></textarea>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_cont3"> Mensaje Admins <span class="required">*</span></label>
+                                <textarea class="form-control min_textarea" name="contenido3" id="_cont3"></textarea>
+                            </div>
+                            <BR>
+                            <p> <strong>Leyenda:</strong> </p>
+                            <ul>
+                                <strong> Datos de Reserva:</strong>
+                                <li> [destino] = Nombre del Destino</li>
+                                <li> [subdestino] = Nombre del Subdestino</li>
+                                <li> [nombre] = Nombre del Cliente</li>
+                                <li> [fechallegada] = Fecha de Arrivo del Cliente</li>
+                                <li> [fechasalida] = Fecha de Partida del Cliente</li>
+                                <li> [canthab] = Cantidad de Habitaciones Reservadas</li>
+                                <li> [cantpersonas] = Cantidad de Personas Total</li>
+                                <li> [horallegada] = Hora de Llegada a Cuba del Cliente</li>
+                                <li> [datosvuelo] = Datos del Vuelo en el que Arriva a Cuba</li>
+                                <li> [email] = E-Mail del Cliente </li>
+                                <li> [telefono] = Telefono del Cliente </li>
+                                <li> [comentario] = Comentarios del Cliente </li>
+                                <strong> Datos de Casa:</strong>
+                                <li> [casa] = Nombre del Hostal </li>
+                                <li> [url] = URL de la Casa </li>
+                                <li> [casadireccion] = Dirección de la casa</li>
+                                <li> [casaresponsable] = Nombre del dueño</li>
+                                <li> [casatelefono] = Teléfono de la casa</li>
+                                <li> [casacorreo] = Correo del dueño </li>
+                                <li> [casatexto] = Descripción de lacasa</li>
+                                <li> [casaprecio] = Precio de la casa</li>
+                                <li> [casacuartos] = Cantidad de Cuartos</li>
+                                <li> [casacapacidad] = Capacidad Total de la Casa</li>
+                                <li> [casabath] = Cantidad de baños</li>
+                                <li> [casareglas] = Reglas de la casa</li>
+                            </ul>
+                            <BR>
+                            <div class="comment-form-author">
+                                <div class="submit-btn">
+                                    <input class="btn btn-primary" type="submit" value="Insertar">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

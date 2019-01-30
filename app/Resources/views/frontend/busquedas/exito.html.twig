@@ -1,0 +1,43 @@
+{% extends 'base_frontend_detalles.html.twig' %}
+{% block body %}
+    <section id="aa-about-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-about-us-area">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="aa-about-us-left">
+                                    <div class="aa-title">
+                                        <h2>{{ 'reservaexito.titulo' | trans({}, 'base') }}</h2>
+                                        <span></span>
+                                        <p> {{ 'reservaexito.texto' | trans({}, 'base') }} </p>
+                                        <hr>
+                                        <h3>{{ 'reservaexito.subtitulo' | trans({}, 'base') }}</h3>
+                                        <ul>
+                                            <li> <strong>{{ 'reservaexito.casanombre' | trans({}, 'base') }}:</strong> {{ casa.nombre }}</li>
+                                            <li> <strong>{{ 'reservaexito.casadestino' | trans({}, 'base') }}:</strong>  {{ casa.subdestinosid.destinoid.nombre }} / {{ casa.subdestinosid.nombre }}</li>
+                                            <li> <strong>{{ 'reservaexito.casadireccion' | trans({}, 'base') }}:</strong>  {{ casa.direccion }}</li>
+                                            <li> <strong>{{ 'reservaexito.casaprecio' | trans({}, 'base') }}:</strong>  {{ casa.precio }} {{ 'search.cuc' | trans({}, 'base') }} </li>
+                                        </ul>
+                                        <h3>{{ 'reservaexito.subtitulo2' | trans({}, 'base') }}</h3>
+                                        <ul>
+                                            <li> <strong>{{ 'reservaexito.nombre' | trans({}, 'base') }}:</strong>  {{ reserva.nombre }}</li>
+                                            <li> <strong>{{ 'reservaexito.hab' | trans({}, 'base') }}:</strong>  {{ reserva.canthab }}</li>
+                                            <li> <strong>{{ 'reservaexito.per' | trans({}, 'base') }}:</strong>  {{ reserva.cantpersonas }} </li>
+                                            <li> <strong>{{ 'reserva.input_llegada' | trans({}, 'base') }}:</strong>  {{ reserva.fechallegada }} </li>
+                                            <li> <strong>{{ 'reserva.input_salida' | trans({}, 'base') }}:</strong>  {{ reserva.fechasalida }}</li>
+                                        </ul>
+                                        <hr>
+                                        <a href="{{ path('homepage') }}"> <button class="btn btn-primary">{{ 'reservaexito.button1' | trans({}, 'base') }}</button> </a>
+                                        <a href="{{ path('casas_todas') }}"> <button class="btn btn-primary">{{ 'reservaexito.button2' | trans({}, 'base') }}</button> </a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

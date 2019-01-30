@@ -1,0 +1,118 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-slider">
+        <div class="aa-slider-area">
+            <div class="aa-top-slider">
+                {% for itembanner in banner %}
+                    <div class="aa-top-slider-single">
+                        <img src="{{ itembanner.imagen | imagine_filter('full_banner_front') }}" alt="img">
+                        <div class="aa-top-slider-content">
+                            {% if itembanner.titulo != '' %}
+                                <span class="aa-top-slider-catg">{{ itembanner.titulo }}</span>
+                            {% endif %}
+                            {% if itembanner.descripcion != '' %}
+                                <h4 class="aa-top-slider-title">{{ itembanner.descripcion }}</h4>
+                            {% endif %}
+                            {% if itembanner.direccion != '' %}
+                                <p class="aa-top-slider-location"><i
+                                            class="fa fa-map-marker"></i>{{ itembanner.direccion }}
+                                </p>
+                            {% endif %}
+                            {% if itembanner.texto != '' %}
+                                <span class="aa-top-slider-off">{{ itembanner.texto }}</span>
+                            {% endif %}
+                            {% if itembanner.precio != '0' %}
+                                <p class="aa-top-slider-price">{{ itembanner.precio }}</p>
+                            {% endif %}
+                            {% if itembanner.url != '' %}
+                                <BR>
+                                <a class="banner_link" href="{{ itembanner.url }}" target="_blank">Visitar</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section id="aa-advance-search">
+        <div class="container">
+            <div class="aa-advance-search-area">
+                <div class="form">
+                    <div class="aa-advance-search-top">
+                        <div class="row">
+                            <form method="get" onsubmit="return cache()" action="{{ path('search') }}">
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-search"></i>
+                                        </div>
+                                        <select name="text" class="js-example-basic-single form-control" id="texto_finder">
+                                            {% for items in destinos %}
+                                                <option value="d_{{ items.nombre }}">{{ items.nombre }}</option>
+                                            {% endfor %}
+                                            {% for items in subdestinos %}
+                                                <option value="s_{{ items.nombre }}">{{ items.destinoid.nombre }} - {{ items.nombre }}</option>
+                                            {% endfor %}
+                                            {% for items in casas %}
+                                                <option value="c_{{ items.nombre }}">{{ items.subdestinosid.destinoid.nombre }} - {{ items.subdestinosid.nombre }} - {{ items.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-calendar"></i>
+                                        </div>
+                                        <input class="form-control" name="date" id="fecha_llegada1" autocomplete="off" required=""/>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-users"></i>
+                                        </div>
+                                        <select class="form-control" name="guest" id="_guest">
+                                            <option value="1" selected>1 {{ 'portada.guest1' | trans({}, 'base') }}</option>
+                                            <option value="2">2 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                            <option value="3">3 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                            <option value="4">4 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                            <option value="5">5 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                            <option value="5+">{{ 'portada.guest5' | trans({}, 'base') }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="aa-single-advance-search">
+                                        <input class="aa-search-btn" type="submit" value="Search">
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    {% if recomendados | length > 0 %}
+        {% include 'frontend/templates/recomendados.html.twig' %}
+    {% endif %}
+    {% if poi | length > 0 %}
+        {% include 'frontend/templates/poi.html.twig' %}
+    {% endif %}
+    {% if test | length > 0 %}
+        {% include 'frontend/templates/testimonios.html.twig' %}
+    {% endif %}
+    <script>
+        function cache() {
+            var fecha1 = document.getElementById('fecha_llegada1').value;
+            var texto = document.getElementById('texto_finder').value;
+            var guest = document.getElementById('_guest').value;
+            sessionStorage.setItem("Fecha1", fecha1);
+            sessionStorage.setItem("Texto", texto);
+            sessionStorage.setItem("Guest", guest);
+            return true;
+        }
+    </script>
+{% endblock %}

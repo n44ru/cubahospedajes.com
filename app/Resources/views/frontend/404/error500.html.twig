@@ -1,0 +1,16 @@
+{% extends 'simple.html.twig' %}
+{% block body %}
+    <section id="aa-error">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-error-area">
+                        <h2>500</h2>
+                        <p><span class="fa fa-warning"></span>Oops! Internal Server Error!</p>
+                        <a href="{{ path('homepage') }}">Back Home</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

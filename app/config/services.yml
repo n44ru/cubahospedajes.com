@@ -1,0 +1,31 @@
+# Learn more about services, parameters and containers at
+# http://symfony.com/doc/current/book/service_container.html
+parameters:
+#    parameter_name: value
+
+services:
+#    service_name:
+#        class: AppBundle\Directory\ClassName
+#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
+
+    app.convertdate:
+        class: AppBundle\Utils\ConvertDate
+
+    app.sitemap.listener:
+         class: AppBundle\EventListener\SitemapListener
+         arguments:
+                      router: "@router"
+                      em: "@doctrine.orm.entity_manager"
+         tags: [{name: "presta.sitemap.listener"}]
+
+    app.adminalertas:
+                class: AppBundle\Utils\AdminAlertas
+                arguments:
+                          em: "@doctrine.orm.entity_manager"
+    app.slugger:
+          class: AppBundle\Utils\Slugger
+
+    app.queryhelper:
+              class: AppBundle\Utils\QueryHelper
+              arguments:
+                          em: "@doctrine.orm.entity_manager"

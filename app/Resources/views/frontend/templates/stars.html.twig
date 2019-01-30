@@ -1,0 +1,38 @@
+<div class="yellow-star">
+    {% if items.rating == 0 %}
+        <p> No Stars</p>
+    {% endif %}
+    {% if items.rating == 1 %}
+        <p>
+            <i class="glyphicon glyphicon-star"></i>
+        </p>
+    {% endif %}
+    {% if items.rating == 2 %}
+        <p>
+            {% for j in 0..1 %}
+                <i class="glyphicon glyphicon-star"></i>
+            {% endfor %}
+        </p>
+    {% endif %}
+    {% if items.rating == 3 %}
+        <p>
+            {% for j in 0..2 %}
+                <i class="glyphicon glyphicon-star"></i>
+            {% endfor %}
+        </p>
+    {% endif %}
+    {% if items.rating == 4 %}
+        <p>
+            {% for j in 0..3 %}
+                <i class="glyphicon glyphicon-star"></i>
+            {% endfor %}
+        </p>
+    {% endif %}
+    {% if items.rating == 5 %}
+        <p>
+            {% for j in 0..4 %}
+                <i class="glyphicon glyphicon-star"></i>
+            {% endfor %}
+        </p>
+    {% endif %}
+</div>

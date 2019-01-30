@@ -1,0 +1,38 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2>{{ 'exito.titulo' | trans({}, 'base') }}</h2>
+                        <ol class="breadcrumb">
+                            <li><a>{{ 'exito.subtitulo' | trans({}, 'base') }}</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-about-us">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-about-us-area">
+                        <div class="row">
+                            <div class="col-md-12">
+                                <div class="aa-about-us-right text-center">
+                                    <div class="aa-title">
+                                        <h2>{{ 'exito.mensaje' | trans({}, 'base') }}</h2>
+                                        <span></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

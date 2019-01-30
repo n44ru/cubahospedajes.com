@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Home Property | Home{% endblock %}</title>
+    {% block stylesheets %}
+        <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/slick.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}" type="text/css" media="screen"/>
+        <link id="switcher" href="{{ asset('css/theme-color/default-theme.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/datatable/jquery.dataTables.min.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/datatable/mbs-qdtf.css') }}" rel="stylesheet" type="text/css"/>
+        {#<link href="{{ asset('css/datepicker/bootstrap-datepicker.css') }}" rel="stylesheet" type="text/css"/>#}
+        <link href="{{ asset('css/dropdowns-enhancement.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/datepicker/daterangepicker.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/select2/select2.css') }}" rel="stylesheet" type="text/css">
+        <link href="{{ asset('css/mios/mio_back.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+<div id="aa-preloader-area">
+    <div class="pulse"></div>
+</div>
+<a class="scrollToTop" href="#"><i class="fa fa-angle-double-up"></i></a>
+<div class="container">
+    <div class="row">
+        <nav class="navbar navbar-inverse" role="navigation">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-ex1-collapse">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand" href="{{ path('dashboard') }}">Administraci&oacute;n</a>
+            </div>
+            <div class="collapse navbar-collapse navbar-ex1-collapse">
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Web <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('homepage') }}" target="_blank">Portada</a></li>
+                            <li><a href="{{ path('casas_todas') }}" target="_blank">Lugares</a></li>
+                            <li><a href="{{ path('gallery_front') }}" target="_blank">Galer&iacute;a</a></li>
+                            <li><a href="{{ path('registro') }}" target="_blank">Inscribirse</a></li>
+                        </ul>
+                    </li>
+                </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Frontend <b
+                                        class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('banner_ver') }}">Banner</a></li>
+                                <li><a href="{{ path('destinos_ver') }}">Destinos</a></li>
+                                <li><a href="{{ path('subdestinos_ver') }}">Subdestinos</a></li>
+                                <li><a href="{{ path('casa_ver') }}">Casas</a></li>
+                                <li><a href="{{ path('puntos_ver') }}">Puntos</a></li>
+                                <li><a href="{{ path('recomendados_ver') }}">Recomendados</a></li>
+                                <li><a href="{{ path('gallery_ver') }}">Galer&iacute;a</a></li>
+                                <li><a href="{{ path('testimonios_ver') }}">Testimonios</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% endif %}
+                <ul class="nav navbar-nav">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">Backend <b class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('casa_inactivas') }}">Casas Inactivas</a></li>
+                                <li><a href="{{ path('imagen_ver') }}">Imagenes</a></li>
+                                <li><a href="{{ path('coord_ver') }}">Coordenadas</a></li>
+                                <li><a href="{{ path('etiquetas_ver') }}">Etiquetas</a></li>
+                            {% endif %}
+                            <li><a href="{{ path('reservas_ver') }}">Reservas</a></li>
+                            {% if is_granted('ROLE_ADMIN') %}
+                                <li><a href="{{ path('recomendados_ver') }}">Recomendados</a></li>
+                                <li><a href="{{ path('admin_users') }}">Usuarios</a></li>
+                                <li><a href="{{ path('config_ver') }}">Configuraciones</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+                {% if is_granted('ROLE_ADMIN') %}
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Correos <b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('correos_ver') }}">Correos</a></li>
+                                <li><a href="{{ path('estados_ver') }}">Estados</a></li>
+                                <li><a href="{{ path('correoestados_ver') }}">Correo - Estados</a></li>
+                            </uL>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Traducciones<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('idiomas_ver') }}">Idiomas</a></li>
+                                <li><a href="{{ path('casatrans_ver') }}">Casas</a></li>
+                                <li><a href="{{ path('puntostrans_ver') }}">Puntos</a></li>
+                                <li><a href="{{ path('bannertrans_ver') }}">Banner</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                    <ul class="nav navbar-nav">
+                        <li class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-toggle="dropdown">Utiles<b class="caret"></b></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="{{ path('generate_sitemap') }}">Generar Sitemap</a></li>
+                                <li><a href="{{ path('url_full') }}">Generar URL de Casas (Todas)</a></li>
+                                <li><a href="{{ path('url_partial') }}">Generar URL de Casas (Nuevas)</a></li>
+                            </ul>
+                        </li>
+                    </ul>
+                {% endif %}
+                {% set alertas = adminalertas.alertas %}
+                {% set sum =  alertas.reservas + alertas.testimonios + alertas.casasinactivas %}
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown"><i
+                                    class="glyphicon glyphicon-bell"></i>
+                            {% if  sum > 0 %}
+                                <strong>{{ sum }}</strong>
+                            {% endif %}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            {% if alertas.reservas > 0 %}
+                                <li><a href="{{ path('alertas_ver',{'alerta': 'reservas'}) }}">Tienes
+                                        <strong>{{ alertas.reservas }}</strong> Reservas Nuevas
+                                        <small class="blue_text"> Ver</small>
+                                    </a></li>
+                            {% endif %}
+                            {% if alertas.casasinactivas > 0 %}
+                                <li><a href="{{ path('alertas_ver',{'alerta': 'inactivas'}) }}">Tienes
+                                        <strong>{{ alertas.casasinactivas }}</strong> Casas Inactivas Nuevas
+                                        <small class="blue_text"> Ver</small>
+                                    </a></li>
+                            {% endif %}
+                            {% if alertas.testimonios > 0 %}
+                                <li><a href="{{ path('alertas_ver',{'alerta': 'testimonios'}) }}">Tienes
+                                        <strong>{{ alertas.testimonios }}</strong> Testimonios por Revisar
+                                        <small class="blue_text"> Ver</small>
+                                    </a></li>
+                            {% endif %}
+                            {% if  sum == 0 %}
+                                <li><a> No existen alertas nuevas.</a></li>
+                            {% endif %}
+                        </ul>
+                    </li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">{{ app.user.username }} <b
+                                    class="caret"></b></a>
+                        <ul class="dropdown-menu">
+                            <li><a href="{{ path('user_logout') }}">Cerrar Sesi&oacute;n</a></li>
+                        </ul>
+                    </li>
+                </ul>
+            </div>
+        </nav>
+    </div>
+</div>
+<div class="container-fluid" id="backend_menu">
+    <div class="row">
+        <div class="col-md-12">
+                <div class="col-md-2">
+                    <div class="list-group">
+                        <a href="{{ path('dashboard') }}" class="list-group-item active">Dashboard</a>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="list-group-item">
+                                <a href="{{ path('banner_ver') }}">Banner</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('destinos_ver') }}">Destinos</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('subdestinos_ver') }}">Subdestinos</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('casa_ver') }}">Casas</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('casa_inactivas') }}">Casas Inactivas</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('testimonios_ver') }}">Testimonios</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('imagen_ver') }}">Imagenes</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('coord_ver') }}">Coordenadas</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('puntos_ver') }}">Puntos</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('etiquetas_ver') }}">Etiquetas</a>
+                            </div>
+                        {% endif %}
+                        <div class="list-group-item">
+                            <a href="{{ path('reservas_ver') }}">Reservas</a>
+                        </div>
+                        {% if is_granted('ROLE_ADMIN') %}
+                            <div class="list-group-item">
+                                <a href="{{ path('gallery_ver') }}">Galer&iacute;a</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('recomendados_ver') }}">Recomendados</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('correos_ver') }}">Correos</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('estados_ver') }}">Estados</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('correoestados_ver') }}">Correo - Estados</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('admin_users') }}">Usuarios</a>
+                            </div>
+                            <div class="list-group-item">
+                                <a href="{{ path('config_ver') }}">Configuraciones</a>
+                            </div>
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="col-md-10">
+                    {% block body %}
+
+                    {% endblock %}
+                </div>
+        </div>
+    </div>
+</div>
+
+
+{% block javascripts %}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/slick.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.mixitup.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.fancybox.pack.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datatable/jquery.datatables.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datatable/mbs-qdtf.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/dropdowns-enhancement.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datepicker/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+    {#<script type="text/javascript" src="{{ asset('js/mios/mio.js') }}"></script>#}
+    <script type="text/javascript" src="{{ asset('js/mios/back.js') }}"></script>
+{% endblock %}
+</body>
+</html>

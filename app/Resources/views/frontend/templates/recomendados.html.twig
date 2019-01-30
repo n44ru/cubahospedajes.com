@@ -1,0 +1,103 @@
+<section id="aa-agents">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-agents-area">
+                    <div class="aa-title">
+                        <h2>{{ 'recomended.title' | trans({}, 'base') }}</h2>
+                        <span></span>
+                    </div>
+                    <div class="aa-agents-content">
+                        <ul class="aa-agents-slider">
+                            {% set id = 0 %}
+                            {% for items in recomendados %}
+                                <li>
+                                    <div class="aa-single-agents">
+                                        <div class="aa-agents-img">
+                                            <div id="carousel-example-generic-{{ id }}" class="carousel slide">
+                                                {% if items.puntosid == '' %}
+                                                <div class="carousel-inner">
+                                                    {% set i = 0 %}
+                                                    {% for items2 in img_casas %}
+                                                        {% if  items2.casaid.id == items.casaid.id %}
+                                                            <div class="item{% if i == 0 %} active{% endif %}">
+                                                                <img class="img_casa" alt="{{ items2.tags }}"
+                                                                     src="{{ items2.imagen |  imagine_filter('gallery_view') }}">
+                                                            </div>
+                                                            {% set i = i + 1 %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <a class="left carousel-control"
+                                                   href="#carousel-example-generic-{{ id }}"
+                                                   data-slide="prev">
+                                                    <span class="icon-prev"></span>
+                                                </a>
+                                                <a class="right carousel-control"
+                                                   href="#carousel-example-generic-{{ id }}"
+                                                   data-slide="next">
+                                                    <span class="icon-next"></span>
+                                                </a>
+                                                {% set slug1 = slugger.slugify(items.casaid.subdestinosid.destinoid.nombre) %}
+                                                {% set slug2 = slugger.slugify(items.casaid.subdestinosid.nombre) %}
+                                                {% set slug3 = slugger.slugify(items.casaid.nombre) %}
+                                                <div class="aa-agetns-info">
+                                                    <h4>
+                                                        <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.casaid.nombre }}</a>
+                                                    </h4>
+                                                    <span>{{ items.casaid.Subdestinosid.nombre }}</span>
+                                                    <div class="aa-agent-social">
+                                                        <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"><i
+                                                                    class="fa fa-eye"></i></a>
+                                                    </div>
+                                                </div>
+                                                {% elseif items.casaid == '' %}
+                                                <div class="carousel-inner">
+                                                    {% set i = 0 %}
+                                                    {% for items2 in img_puntos %}
+                                                        {% if  items2.puntosid.id == items.puntosid.id %}
+                                                            <div class="item {% if i == 0 %}active{% endif %}">
+                                                                <img class="img_casa" alt="{{ items2.tags }}"
+                                                                     src="{{ items2.imagen |  imagine_filter('gallery_view') }}">
+                                                            </div>
+                                                            {% set i = i + 1 %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                                <a class="left carousel-control"
+                                                   href="#carousel-example-generic-{{ id }}"
+                                                   data-slide="prev">
+                                                    <span class="icon-prev"></span>
+                                                </a>
+                                                <a class="right carousel-control"
+                                                   href="#carousel-example-generic-{{ id }}"
+                                                   data-slide="next">
+                                                    <span class="icon-next"></span>
+                                                </a>
+                                                {% set slug1 = slugger.slugify(items.puntosid.subdestinosid.destinoid.nombre) %}
+                                                {% set slug2 = slugger.slugify(items.puntosid.subdestinosid.nombre) %}
+                                                {% set slug3 = slugger.slugify(items.puntosid.nombre) %}
+                                                <div class="aa-agetns-info">
+                                                    <h4>
+                                                        <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.puntosid.nombre }}</a>
+                                                    </h4>
+                                                    <span>{{ items.puntosid.Subdestinosid.nombre }}</span>
+                                                    <div class="aa-agent-social">
+                                                        <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"><i
+                                                                    class="fa fa-eye"></i></a>
+                                                    </div>
+                                                </div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </li>
+                                {% set id = id + 1 %}
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

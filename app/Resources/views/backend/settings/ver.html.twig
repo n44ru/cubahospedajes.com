@@ -1,0 +1,69 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+                <div class="col-md-12">
+                            <table class="table dynamic">
+                                <thead>
+                                <tr>
+                                    <th> Email Global </th>
+                                    <th> Web T&iacute;tulo </th>
+                                    <th> Web Descripci&oacute;n </th>
+                                    <th> Web Keywords </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set i =0 %}
+                                    <tr>
+                                        <td> {{ config.emailglobal }} </td>
+                                        <td> {{ config.webtitulo }} </td>
+                                        <td> {{ config.webdesc }} </td>
+                                        <td> {{ config.webkeywords }} </td>
+                                        <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                                               title="Editar" href="#myModal_edit"><i class="glyphicon glyphicon-edit"></i></a></td>
+                                    </tr>
+                                    <!-- Modal para editar Destinos-->
+                                    <div class="modal fade" id="myModal_edit" tabindex="-1" role="dialog"
+                                         aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal"
+                                                            aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Editar Configuraciones</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    <form method="post">
+                                                        <div class="form-group">
+                                                            <label for="_eg"> E-Mail Global </label>
+                                                            <input class="form-control" name="global" id="_eg" value="{{ config.emailglobal }}">
+                                                            <BR>
+                                                        </div>
+                                                        <hr>
+                                                        <div class="form-group">
+                                                            <label for="_mt"> Web Title </label>
+                                                            <textarea class="form-control" name="webtitle" id="_mt">{{ config.webtitulo }}</textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="_md"> Web Description </label>
+                                                            <textarea class="form-control" name="webdesc" id="_md">{{ config.webdesc }}</textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <label for="_mk"> Web Keywords </label>
+                                                            <textarea class="form-control" name="webkeyword" id="_mk">{{ config.webkeywords }}</textarea>
+                                                        </div>
+                                                        <div class="form-group">
+                                                            <div class="submit-btn">
+                                                                <input class="btn btn-primary" type="submit" value="Actualizar">
+                                                            </div>
+                                                        </div>
+                                                    </form>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </tbody>
+                            </table>
+                            <div class="clearfix"></div>
+                        </div>
+{% endblock %}

@@ -1,0 +1,92 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+                <div class="col-md-12">
+                            <hr>
+                            <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+                                Insertar </a>
+                            <hr>
+                            <table class="table dynamic">
+                                <thead>
+                                <tr>
+                                    <th> Estado </th>
+                                    <th> Correo </th>
+                                    <th></th>
+                                </tr>
+                                </thead>
+                                <tbody>
+                                {% set i =0 %}
+                                {% for items in todos %}
+                                    <tr>
+                                        <td> {{ items.estadosid.estado }} </td>
+                                        <td> {{ items.correosid.titulo }} </td>
+                                        <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                                               title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                                    </tr>
+                                    <!-- Modal -->
+                                    <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                                    <h4 class="modal-title">Eliminar Etiquetas</h4>
+                                                </div>
+                                                <div class="modal-body">
+                                                    Esta seguro que desea eliminar esta Relaci&oacute;n?
+                                                </div>
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                                    <a href="{{ path('correoestado_eliminar',{'id': items.id})}}"><button type="button" class="btn btn-primary">S&iacute;</button></a>
+                                                </div>
+                                            </div><!-- /.modal-content -->
+                                        </div><!-- /.modal-dialog -->
+                                    </div><!-- /.modal -->
+                                    <!-- Modal -->
+                                    {% set i = i + 1 %}
+                                {% endfor %}
+                                </tbody>
+                            </table>
+                            <div class="clearfix"></div>
+                        </div>
+    <!-- Modal para insertar Coordenadas-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Relacionar</h4>
+                </div>
+                <div class="modal-body">
+                    <div class="aa-contact-form">
+                        <form method="post" class="contactform">
+                            <div class="form-group">
+                                <label for="_estados"> Estados </label>
+                                <select class="form-control" name="estadoid" id="_estados">
+                                    {% for items in estados %}
+                                    <option value="{{ items.id }}">{{ items.estado }}</option>
+                                    {% endfor %}
+                                </select>
+
+                            </div><BR>
+                            <div class="form-group">
+                                <label for="_correos"> Correo </label>
+                                <select class="form-control" name="correoid" id="_correos">
+                                    {% for items in correos %}
+                                        <option value="{{ items.id }}">{{ items.titulo }}</option>
+                                    {% endfor %}
+                                </select>
+                            </div>
+                            <BR>
+                            <div class="comment-form-author">
+                                <div class="submit-btn">
+                                    <input class="btn btn-primary" type="submit" value="Insertar">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

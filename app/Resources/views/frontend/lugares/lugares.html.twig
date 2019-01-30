@@ -1,0 +1,92 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2></h2>
+                        <ol class="breadcrumb">
+                            <li></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-advance-search">
+        <div class="container">
+            <div class="aa-advance-search-area">
+                <div class="form">
+                    <div class="aa-advance-search-top">
+                        <div class="row">
+                            <form method="get" onsubmit="return Save()" action="{{ path('search_places') }}">
+                            <div class="col-md-12">
+                                <div class="col-md-3">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-map"></i>
+                                        </div>
+                                        <select id="_destino" name="dest" class="form-control" onchange="return Find_Sub()">
+                                            <option value="">{{ 'lugares.select' | trans({}, 'base') }}</option>
+                                            {% for items in destinos %}
+                                                <option value="{{ items.nombre }}">{{ items.nombre }}</option>
+                                            {% endfor %}
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-3">
+                                        <div id="sub_dynamic">
+                                            {% block subdestinos %}
+                                            {% endblock %}
+                                        </div>
+                                </div>
+                                <div class="col-md-3" id="hidden">
+                                    <div class="input-group">
+                                        <div class="input-group-addon">
+                                            <i class="fa fa-pencil"></i>
+                                        </div>
+                                        <input name="text" class="form-control" type="text" id="_texto" placeholder="{{ 'portada.buscar' | trans({}, 'base') }}"
+                                               autocomplete="off">
+                                    </div>
+                                </div>
+                                <div class="col-md-2" id="hidden_two">
+                                    <div class="aa-single-advance-search">
+                                        <input type="submit" class="aa-search-btn" value="{{ 'search.buscar' | trans({}, 'base') }}">
+                                    </div>
+                                </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-latest-property">
+        <div class="container">
+                    {% block dinamico %}
+                        {% if recomendados | length > 0 %}
+                            {% include 'frontend/templates/recomendados.html.twig' %}
+                        {% endif %}
+                    {% endblock %}
+                </div>
+            </div>
+        <BR><BR>
+    </section>
+    <script>
+        function Find_Sub() {
+            var destino = document.getElementById('_destino').value;
+            $("#sub_dynamic").load("{{ path('sub_dynamic') }}", {'destino': destino});
+        }
+        function Save() {
+            var dest = document.getElementById('_destino').value;
+            var sub = document.getElementById('_sub').value;
+            var text = document.getElementById('_texto').value;
+            sessionStorage.setItem("destplaces", dest);
+            sessionStorage.setItem("subplaces", sub);
+            sessionStorage.setItem("textplaces", text);
+        }
+    </script>
+{% endblock %}

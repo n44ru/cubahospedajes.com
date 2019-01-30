@@ -1,0 +1,328 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    {#<div class="container">#}
+    <div class="col-md-12">
+        <hr>
+        <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+            Insertar </a>
+        <hr>
+        {# incluir el filtro #}
+        {% include 'backend/reservas/filtro.html.twig' %}
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th></th>
+                <th> # </th>
+                <th> Estado</th>
+                <th> Casa</th>
+                <th> Fecha Llegada</th>
+                <th> Fecha Salida</th>
+                <th> <i class="glyphicon glyphicon-user"></i> </th>
+                <th> <i class="glyphicon glyphicon-home"></i></th>
+                <th> Nombre</th>
+                <th> Email</th>
+                <th> Tel&eacute;fono</th>
+                {#<th> Pa&iacute;s</th>#}
+                {#<th> Datos Vuelo</th>#}
+                {#<th> Hora Llegada</th>#}
+                {#<th> Comentarios</th>#}
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set i =0 %}
+            {% for items in reservas %}
+                <tr>
+                    {# Buttons #}
+                    <td>
+                        <div class="btn-group">
+                            <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Estados<span class="caret"></span></button>
+                            <ul class="dropdown-menu noclose">
+                                {% set x=0 %}
+                                {% for est in estados %}
+                                    <li><a data-toggle="modal" onclick="return correo_dinamico({{ est.id }},{{ items.id }},{{ x }})" href="#destino{{ x }}">{{ est.estado }}</a></li>
+                                    {# incluir el modal aqui #}
+                                    {% set x=x+1 %}
+                                {% endfor %}
+                            </ul>
+                        </div>
+                    </td>
+
+                    <td> {{ items.id }} </td>
+                    <td>
+                        <strong style="color: darkred;">{{ items.estadosid.estado }}</strong>
+                    </td>
+                    <td> {{ items.casaid.nombre }} </td>
+                    <td> {{ dates.date_back(items.fechallegada) }} </td>
+                    <td> {{ dates.date_back(items.fechasalida) }}</td>
+                    <td> {{ items.cantpersonas }}</td>
+                    <td> {{ items.canthab }}</td>
+                    <td> {{ items.nombre }}</td>
+                    <td> {{ items.email | slice(0, 20) }}</td>
+                    <td> {{ items.telefono }}</td>
+                    {#<td> {{ items.pais }}</td>#}
+                    {#<td> {{ items.datosvuelo }}</td>#}
+                    {#<td> {{ items.horallegada }}</td>#}
+                    {#<td> {{ items.comentario  | slice(0,100) }}...</td>#}
+
+
+                    <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                           title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                           title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+                <!-- Modal para editar Destinos-->
+                <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Editar Reserva</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    <div class="form-group">
+                                        <div class="form-group">
+                                            <input type="hidden" name="id" value="{{ items.id }}"/>
+                                            <label for="_file_casa"> Seleccione la Casa </label><br>
+                                            {#<select class="form-control" name="select_casas_edit" id="_file_casa">#}
+                                                <select name="select_casas_edit" id="_file_casa" class="js-example-basic-single select2_backend">
+                                                <option value="{{ items.casaid.id }}">{{ items.casaid.subdestinosid.destinoid.nombre }}
+                                                    / {{ items.casaid.subdestinosid.nombre }}
+                                                    / {{ items.casaid.nombre }}</option>
+                                                {% for items2 in casas if items.casaid.id != items2.id %}
+                                                    <option value="{{ items2.id }}">{{ items2.subdestinosid.destinoid.nombre }}
+                                                        / {{ items2.subdestinosid.nombre }}
+                                                        / {{ items2.nombre }}</option>
+                                                {% endfor %}
+                                            </select>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="g11"> Estado de la Reserva <span class="required">*</span></label>
+                                            <select name="estado" id="g11" class="form-control">
+                                                <option value="{{ items.estadosid.id }}">{{ items.estadosid.estado }}</option>
+                                                {% for e in estados if items.estadosid.id != e.id %}
+                                                    <option value="{{ e.id }}">{{ e.estado }}</option>
+                                                {% endfor %}
+                                            </select>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fecha_salida_edit"> Fecha Llegada <span
+                                                        class="required">*</span></label>
+                                            <input class="form-control" name="fecha1" id="fecha_salida_edit"
+                                                   required=""
+                                                   value="{{ dates.date_back(items.fechallegada) }}" autocomplete="off"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="fecha_llegada_edit"> Fecha Salida <span
+                                                        class="required">*</span></label>
+                                            <input class="form-control" name="fecha2" id="fecha_llegada_edit"
+                                                   required="" value="{{ dates.date_back(items.fechasalida) }}" autocomplete="off"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="g1"> Cantidad de Personas <span
+                                                        class="required">*</span></label>
+                                            <input type="number" class="form-control" name="guest" id="g1" required=""
+                                                   value="{{ items.cantpersonas }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="h1"> Habitaciones </label>
+                                            <input type="number" class="form-control" name="hab" id="h1"
+                                                   value="{{ items.canthab }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="n1"> Nombre del Cliente </label>
+                                            <input class="form-control" name="nombre" id="n1"
+                                                   value="{{ items.nombre }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="e1"> E-Mail del Cliente </label>
+                                            <input class="form-control" name="email" id="e1" value="{{ items.email }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="t1"> Tel&eacute;fono </label>
+                                            <input type="number" class="form-control" name="telefono" id="t1"
+                                                   value="{{ items.telefono }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="p1"> Pa&iacute;s </label>
+                                            <input class="form-control" name="pais" id="p1" value="{{ items.pais }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="dv1"> Datos de Vuelo </label>
+                                            <input class="form-control" name="datosvuelo" id="dv1"
+                                                   value="{{ items.datosvuelo }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="hh1"> Hora de Llegada </label>
+                                            <input class="form-control" name="horallegada" id="hh1"
+                                                   value="{{ items.horallegada }}"/>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <label for="hh1"> Comentarios </label>
+                                            <textarea class="form-control" name="comentarios"
+                                                      id="hh1">{{ items.comentario }}</textarea>
+                                            <BR>
+                                        </div>
+                                        <div class="form-group">
+                                            <div class="submit-btn">
+                                                <input class="btn btn-primary" type="submit" value="Editar">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Eliminar Reserva</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea eliminar esta Reserva?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                <a href="{{ path('reservas_eliminar',{'id': items.id}) }}">
+                                    <button type="button" class="btn btn-primary">S&iacute;</button>
+                                </a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+
+                {# Los modals de estados estan aqui #}
+                {% set x=0 %}
+                {% for est in estados %}
+                {% include 'backend/reservas/modal/modal.html.twig' %}
+                    {% set x=x+1 %}
+                {% endfor %}
+                {% set i =i+1 %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+    </div>
+    {#</div>#}
+    <!-- Modal para insertar Reservas-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Insertar Reservas</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        <div class="form-group">
+                            <label for="_file_casa"> Seleccione la Casa </label><br>
+                            {#<select class="form-control" name="select_casas_insert" id="_file_casa">#}
+                                <select name="select_casas_insert" id="_file_casa" class="js-example-basic-single select2_backend">
+                                {% for items2 in casas %}
+                                    <option value="{{ items2.id }}">{{ items2.subdestinosid.destinoid.nombre }}
+                                        / {{ items2.subdestinosid.nombre }} / {{ items2.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="g11"> Estado de la Reserva <span class="required">*</span></label>
+                            <select name="estado" id="g11" class="form-control">
+                                {% for items in estados %}
+                                    <option value="{{ items.id }}">{{ items.estado }}</option>
+                                {% endfor %}
+                            </select>
+                            <BR>
+                        </div>
+                        <!-- Cambiar a datepicker -->
+                        <div class="form-group">
+                            <label for="f1_final"> Fecha <span class="required">*</span></label>
+                            <input class="form-control" name="fecha1" id="f1_final_i" autocomplete="off"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="g1"> Cantidad de Personas <span class="required">*</span></label>
+                            <input type="number" class="form-control" name="guest" id="g1" required=""/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="h1"> Habitaciones </label>
+                            <input type="number" class="form-control" name="hab" id="h1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="n1"> Nombre del Cliente </label>
+                            <input class="form-control" name="nombre" id="n1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="e1"> E-Mail del Cliente </label>
+                            <input class="form-control" name="email" id="e1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="t1"> Tel&eacute;fono </label>
+                            <input type="number" class="form-control" name="telefono" id="t1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="p1"> Pa&iacute;s </label>
+                            <input class="form-control" name="pais" id="p1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="dv1"> Datos de Vuelo </label>
+                            <input class="form-control" name="datosvuelo" id="dv1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="hh1"> Hora de Llegada </label>
+                            <input class="form-control" name="horallegada" id="hh1"/>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <label for="hh1"> Comentarios </label>
+                            <textarea class="form-control" name="comentarios" id="hh1"></textarea>
+                            <BR>
+                        </div>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <input class="btn btn-primary" type="submit" value="Insertar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+<script>
+    function correo_dinamico(id_estado, id_r,x) {
+        $("#correo_dinamico"+x.toString()).load("{{ path('correoestado_dinamico') }}", {
+            'id_estado': id_estado,
+            'id_r': id_r
+        });
+    }
+</script>
+{% endblock %}

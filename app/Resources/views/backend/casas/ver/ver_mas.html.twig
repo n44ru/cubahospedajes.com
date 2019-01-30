@@ -1,0 +1,77 @@
+<div class="modal fade" id="Ver{{ i }}" tabindex="-1" role="dialog"
+     aria-labelledby="myModalLabel"
+     aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal"
+                        aria-hidden="true">&times;</button>
+                <h4 class="modal-title">{{ items.nombre }}</h4>
+            </div>
+            <div class="modal-body">
+                <h3> Destino</h3>
+                {% if items.subdestinosid != '' %}
+                    <p> {{ items.subdestinosid.destinoid.nombre }} </p>
+                {% else %}
+                    <p>No Tiene</p>
+                {% endif %}
+                <hr>
+                <h3> Subdestino</h3>
+                {% if items.subdestinosid != '' %}
+                    <p> {{ items.subdestinosid.nombre }} </p>
+                {% else %}
+                    <p">No Tiene</p>
+                {% endif %}
+                <hr>
+                <h3> Nombre</h3>
+                <p> {{ items.nombre }} </p>
+                <hr>
+                <h3> Direcci&oacute;n</h3>
+                <p> {{ items.direccion }} </p>
+                <hr>
+                <h3> Responsable</h3>
+                <p> {{ items.responsable }} </p>
+                <hr>
+                <h3> Tel&eacute;fono</h3>
+                <p> {{ items.telefono }} </p>
+                <hr>
+                <h3> Correo</h3>
+                <p> {{ items.correo }} </p>
+                <hr>
+                <h3> Precio Alza</h3>
+                <p> {{ items.precio }} </p>
+                <hr>
+                <h3> Precio Baja</h3>
+                <p> {{ items.preciooferta }} </p>
+                <hr>
+                <h3> Capacidad</h3>
+                <p> {{ items.capacidad }} </p>
+                <hr>
+                <h3> Habitaciones</h3>
+                <p> {{ items.cuartos }} </p>
+                <hr>
+                <h3> Baños</h3>
+                <p> {{ items.bath }} </p>
+                <hr>
+                <h3> Activa</h3>
+                <p> {{ items.activa }} </p>
+                <hr>
+                <h3> Texto</h3>
+                <p class="text-justify"> {{ items.texto }}</p>
+                <h3> Reglas</h3>
+                <p class="text-justify"> {{ items.reglas }}</p>
+                <h3> META title</h3>
+                <p> {{ items.metatitle }} </p>
+                <h3> META Description</h3>
+                <p> {{ items.metadesc }} </p>
+                <h3> META Keywords</h3>
+                <p> {{ items.metakeyword }} </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal">
+                    OK
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

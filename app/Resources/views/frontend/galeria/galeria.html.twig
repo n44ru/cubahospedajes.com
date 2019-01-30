@@ -1,0 +1,70 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2>Gallery</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-gallery">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-gallery-area">
+                        <div class="aa-gallery-content">
+                            <div class="aa-gallery-top">
+                                <ul>
+                                    <li data-filter="all" class="filter active">All</li>
+                                    {% set i=0 %}
+                                    {% for items in tags %}
+                                        <li data-filter=".{{ items.tags | lower | slice(0,2) }}{{ i }}" class="filter">{{ items.tags | upper }}</li>
+                                        {% set i = i+1 %}
+                                    {% endfor %}
+                                </ul>
+                            </div>
+                            <div id="mixit-container" class="aa-gallery-body">
+                                {% set j=0 %}
+                                {% for items2 in gallery %}
+                                    <div class="aa-single-gallery mix {{ items2.imagegalleryid.tags | lower | slice(0,2) }}{{ j }}">
+                                        <div class="aa-single-gallery-item">
+                                            <div class="aa-single-gallery-img">
+                                                <a href="#"><img src="{{ items2.imagegalleryid.url |  imagine_filter('gallery_view') }}" alt="img"></a>
+                                            </div>
+                                            <div class="aa-single-gallery-info">
+                                                <a class="fancybox" data-fancybox-group="gallery"
+                                                   href="{{ asset(items2.imagegalleryid.url) }}"><span
+                                                            class="fa fa-eye"></span></a>
+                                                {% if  items2.imagegalleryid.casaid != '' %}
+                                                    {% set slug1 = slugger.slugify(items2.imagegalleryid.casaid.subdestinosid.destinoid.nombre) %}
+                                                    {% set slug2 = slugger.slugify(items2.imagegalleryid.casaid.subdestinosid.nombre) %}
+                                                    {% set slug3 = slugger.slugify(items2.imagegalleryid.casaid.nombre) %}
+                                                    <a class="aa-link"
+                                                       href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"><span
+                                                                class="fa fa-link"></span></a>
+                                                {% else %}
+                                                    {% set slug1 = slugger.slugify(items2.imagegalleryid.puntosid.subdestinosid.destinoid.nombre) %}
+                                                    {% set slug2 = slugger.slugify(items2.imagegalleryid.puntosid.subdestinosid.nombre) %}
+                                                    {% set slug3 = slugger.slugify(items2.imagegalleryid.puntosid.nombre) %}
+                                                    <a class="aa-link"
+                                                       href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"><span
+                                                                class="fa fa-link"></span></a>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    {% set j = j+1 %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

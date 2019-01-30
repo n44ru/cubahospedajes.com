@@ -1,0 +1,14 @@
+# This file is auto-generated during the composer install
+parameters:
+    database_host: 127.0.0.1
+    database_port: null
+    database_name: osiel2
+    database_user: root
+    database_password: root
+    mailer_transport: smtp
+    mailer_host: 127.0.0.1
+    mailer_user: null
+    mailer_password: null
+    secret: 71a2c123bf3f4833e69b350d55d5c8110990be7f
+    router.request_context.host:   localhost/osiel
+    router.request_context.scheme: http

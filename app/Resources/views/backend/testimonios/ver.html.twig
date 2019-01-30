@@ -1,0 +1,216 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    <div class="col-md-12">
+        <hr>
+        <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+            Insertar </a>
+        <hr>
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th> Lugar </th>
+                <th> Nombre </th>
+                <th> Rating </th>
+                <th> Comentario </th>
+                <th> Fecha </th>
+                <th> Activo </th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set i = 0 %}
+            {% for items in testimonios %}
+                <tr>
+                    {% if items.casaid != null %}
+                        <td> {{ items.casaid.nombre }} </td>
+                    {% else %}
+                        <td> {{ items.puntosid.nombre }} </td>
+                    {% endif %}
+                    <td> {{ items.nombre }}</td>
+                    <td> {{ items.rating }}</td>
+                    <td> {{ items.comentario | slice(0, 50)}}</td>
+                    <td> {{ items.fecha }}</td>
+                    <td> {{ items.activo }}</td>
+                    {% if items.activo == 'No' %}
+                    <td><a class="btn btn-success" data-toggle="modal" data-placement="top" title="Activar" href="#Activar{{ i }}"><i class="glyphicon glyphicon-home"></i></a></td>
+                    {% else %}
+                        <td></td>
+                    {% endif %}
+                    <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                           title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a></td>
+                    <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                           title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+                <!-- Modal para editar Destinos-->
+                <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Editar Coordenadas</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" value="{{ items.id }}"/>
+                                    <div class="form-group">
+                                        {% if items.casaid != '' %}
+                                            <h3> {{ items.casaid.subdestinosid.destinoid.nombre }} / {{ items.casaid.subdestinosid.nombre }} / {{ items.casaid.nombre }}</h3>
+                                        {% else %}
+                                            <h3>{{ items.puntosid.subdestinosid.destinoid.nombre }} / {{ items.puntosid.subdestinosid.nombre }} / {{ items.puntosid.nombre }}</h3>
+                                        {% endif %}
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_name"> Nombre </label>
+                                        <input class="form-control" name="nombre" id="_name" required="" value="{{ items.nombre }}"/>
+                                    </div><BR>
+                                    <div class="form-group">
+                                        <label for="_lat"> Rating </label>
+                                        <input class="form-control" type="number" name="rating" id="_lat" required="" value="{{ items.rating }}"/>
+                                    </div><BR>
+                                    <div class="form-group">
+                                        <label for="_long"> Comentario </label>
+                                        <textarea class="form-control input_large" name="comentario" id="_long" required="" >{{ items.comentario }}</textarea>
+                                    </div><BR>
+                                    <div class="form-group">
+                                        <label for="_activo"> Activo </label>
+                                        <select class="form-control" name="activo" id="_activo">
+                                            <option value="{{ items.activo }}">{{ items.activo }}</option>
+                                            <option value="Si">Si</option>
+                                            <option value="No">No</option>
+                                        </select>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <div class="submit-btn">
+                                            <input class="btn btn-primary" type="submit" value="Actualizar">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Eliminar Testimonio</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea eliminar este Testimonio?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                <a href="{{ path('testimonios_eliminar',{'id': items.id})}}"><button type="button" class="btn btn-primary">S&iacute;</button></a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                <div class="modal fade" id="Activar{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Activar Testimonio</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea activar este Testimonio?
+                                A Partir de ahora saldr&aacute; en la P&aacute;gina.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    No
+                                </button>
+                                <a href="{{ path('testimonios_activar',{'id': items.id}) }}">
+                                    <button type="button" class="btn btn-primary">S&iacute;</button>
+                                </a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                {% set i =i+1 %}
+            {% endfor %}
+
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+    <!-- Modal para insertar Coordenadas-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Insertar Testimonios</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post" onsubmit="return validate_selects()">
+                        <!-- -->
+                        <div class="form-group">
+                            <input class="btn btn-primary" type="button" value="Casas" onclick="return boton_casas()">
+                            <input class="btn btn-danger" type="button" value="Puntos de Interes" onclick="return boton_puntos()">
+                        </div><BR>
+                        <!-- -->
+                        <div id="_casas">
+                            <label for="_file_casa"> Seleccione la Casa </label><br>
+                            <select name="select_casas" class="js-example-basic-single" id="_file_casa">
+                                {% for items2 in casas %}
+                                    <option value="{{ items2.id }}">{{ items2.subdestinosid.destinoid.nombre }} / {{ items2.subdestinosid.nombre }} / {{ items2.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- -->
+                        <div id="_puntos">
+                            <label for="_file_puntos"> Seleccione el Punto de Inter&eacute;s </label><br>
+                            <select name="select_puntos" class="js-example-basic-single" id="_file_puntos">
+                                {% for items in puntos %}
+                                    <option value="{{ items.id }}">{{ items.subdestinosid.destinoid.nombre }} / {{ items.subdestinosid.nombre }} / {{ items.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <!-- -->
+                        <input type="hidden" name="option" id="_option" value="">
+                        <!-- -->
+                        <div id="_adjust" class="col-md-3 alert alert-danger">Faltan par&aacute;metros</div>
+                        <div class="form-group">
+                            <label for="_name"> Nombre <span class="required">*</span></label>
+                            <input class="form-control" name="nombre" id="_name" required="" value=""/>
+                        </div><BR>
+                        <div class="form-group">
+                            <label for="_lat"> Rating <span class="required">*</span></label>
+                            <input class="form-control" type="number" name="rating" id="_lat" required="" />
+                        </div><BR>
+                        <div class="form-group">
+                            <label for="_long"> Comentario <span class="required">*</span></label>
+                            <input class="form-control" name="comentario_insert" id="_long" required="" />
+                        </div><BR>
+                        <div class="form-group">
+                            <label for="_activo"> Activo </label>
+                            <select class="form-control" name="activo" id="_activo">
+                                <option value="Si">Si</option>
+                                <option value="No">No</option>
+                            </select>
+                        </div>
+                        <BR>
+                        <div class="form-group">
+                            <div class="submit-btn">
+                                <input class="btn btn-primary" type="submit" value="Insertar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

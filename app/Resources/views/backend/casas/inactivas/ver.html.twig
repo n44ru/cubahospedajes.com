@@ -1,0 +1,130 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+
+    <div class="col-md-12">
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th> Destino</th>
+                <th> Subdestino</th>
+                <th> Nombre</th>
+                <th> Responsable</th>
+                <th> Tel&eacute;fono</th>
+                <th> Correo</th>
+                <th></th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set i =0 %}
+            {% for items in casas %}
+
+                <tr>
+                    {# las casas pueden tener o no destinos o subdestinos #}
+                    {% if items.subdestinosid != '' %}
+                        <td> {{ items.subdestinosid.destinoid.nombre }} </td>
+                    {% else %}
+                        <td><p class="red_text ">No Tiene</p></td>
+                    {% endif %}
+                    {# #}
+                    {% if items.subdestinosid != '' %}
+                        <td> {{ items.subdestinosid.nombre }} </td>
+                    {% else %}
+                        <td><p class="red_text ">No Tiene</p></td>
+                    {% endif %}
+                    {# #}
+                    <td> {{ items.nombre }} </td>
+                    <td> {{ items.responsable }} </td>
+                    <td> {{ items.telefono }} </td>
+                    <td> {{ items.correo }} </td>
+                    <td><a class="btn btn-success" data-toggle="modal" data-placement="top" title="Activar" href="#Activar{{ i }}"><i class="glyphicon glyphicon-home"></i></a></td>
+                    <td><a class="btn btn-primary" data-toggle="modal" data-placement="top" title="Im&aacute;genes" href="#myModal_imagen{{ i }}"><i class="glyphicon glyphicon-picture"></i></a></td>
+                    <td><a class="btn btn-danger" data-toggle="modal" data-placement="top" title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+                <!-- -->
+                <div class="modal fade" id="Activar{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Activar Casa</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea activar esta casa?
+                                A Partir de ahora saldr&aacute; en las busquedas.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    No
+                                </button>
+                                <a href="{{ path('casa_activar',{'id': items.id}) }}">
+                                    <button type="button" class="btn btn-primary">S&iacute;</button>
+                                </a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Eliminar Casa</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea eliminar esta casa, esto eliminar&aacute; sus
+                                relaciones con Imagenes, Coordenadas y Etiquetas.
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">
+                                    No
+                                </button>
+                                <a href="{{ path('casa_eliminar',{'id': items.id}) }}">
+                                    <button type="button" class="btn btn-primary">S&iacute;</button>
+                                </a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                      <!-- Modal -->
+                      <!-- Modal para las imagenes de Casas-->
+                <div class="modal fade" id="myModal_imagen{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Imagenes</h4>
+                            </div>
+                            <div class="modal-body">
+                                <h1> Im&aacute;genes </h1>
+                                {% for items3 in imagenes %}
+                                    {% if items3.casaid.id == items.id %}
+                                        {% if items3.imagen != '' %}
+                                            <img class="img-thumbnail"
+                                                 src="{{ asset(items3.imagen) }}">
+                                            <p> <strong> Etiquetas: </strong> {{ items3.tags }} </p>
+                                        {% endif %}
+                                    {% endif %}
+                                {% endfor %}
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% set i = i + 1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+{% endblock %}

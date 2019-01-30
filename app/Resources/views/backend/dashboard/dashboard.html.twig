@@ -1,0 +1,189 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    {# Reservas de ayer #}
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Reservas de Ayer - {{ dates.date_back(fecha_ayer) }}</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Estado</th>
+                        <th>Cliente</th>
+                        <th>Hostal</th>
+                        <th>Responsable</th>
+                        <th>Tel&eacute;fono</th>
+                        <th> Acci&oacute;n</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i =0 %}
+                    {% for items in reservas_ayer %}
+                        <tr>
+                            <td>{{ items.id }}</td>
+                            <td><p style="color: red">{{ items.estadosid.estado }}</p></td>
+                            <td>{{ items.nombre }}</td>
+                            <td>{{ items.casaid.nombre }}</td>
+                            <td>{{ items.casaid.responsable }}</td>
+                            <td>{{ items.casaid.telefono }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Estados<span
+                                                class="caret"></span></button>
+                                    <ul class="dropdown-menu noclose">
+                                        {% set x=0 %}
+                                        {% for est in estados %}
+                                            <li><a data-toggle="modal"
+                                                   onclick="return correo_dinamico({{ est.id }},{{ items.id }},{{ x }})"
+                                                   href="#destino{{ x }}">{{ est.estado }}</a></li>
+                                            {# incluir el modal aqui #}
+                                            {% set x=x+1 %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% set x=0 %}
+                        {% for est in estados %}
+                            {% include 'backend/reservas/modal/modal.html.twig' %}
+                            {% set x=x+1 %}
+                        {% endfor %}
+                        {% set i =i+1 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {# Reservas de hoy #}
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Reservas de Hoy - {{ dates.date_back(fecha_hoy) }}</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Estado</th>
+                        <th>Cliente</th>
+                        <th>Hostal</th>
+                        <th>Responsable</th>
+                        <th>Tel&eacute;fono</th>
+                        <th> Acci&oacute;n</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i =0 %}
+                    {% for items in reservas_hoy %}
+                        <tr>
+                            <td>{{ items.id }}</td>
+                            <td><p style="color: red">{{ items.estadosid.estado }}</p></td>
+                            <td>{{ items.nombre }}</td>
+                            <td>{{ items.casaid.nombre }}</td>
+                            <td>{{ items.casaid.responsable }}</td>
+                            <td>{{ items.casaid.telefono }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Estados<span
+                                                class="caret"></span></button>
+                                    <ul class="dropdown-menu noclose">
+                                        {% set x=0 %}
+                                        {% for est in estados %}
+                                            <li><a data-toggle="modal"
+                                                   onclick="return correo_dinamico({{ est.id }},{{ items.id }},{{ x }})"
+                                                   href="#destino{{ x }}">{{ est.estado }}</a></li>
+                                            {# incluir el modal aqui #}
+                                            {% set x=x+1 %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% set x=0 %}
+                        {% for est in estados %}
+                            {% include 'backend/reservas/modal/modal.html.twig' %}
+                            {% set x=x+1 %}
+                        {% endfor %}
+                        {% set i =i+1 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    {# Reservas de manana #}
+    <div class="col-md-12">
+        <div class="panel panel-primary">
+            <div class="panel-heading">
+                <h3 class="panel-title">Pr&oacute;ximas Reservas</h3>
+            </div>
+            <div class="panel-body">
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>Fecha Llegada</th>
+                        {#<th>Proximidad</th>#}
+                        <th>Estado</th>
+                        <th>Cliente</th>
+                        <th>Hostal</th>
+                        <th>Responsable</th>
+                        <th>Tel&eacute;fono</th>
+                        <th> Acci&oacute;n</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% set i =0 %}
+                    {% for items in reservas_man %}
+                        <tr>
+                            <td>{{ items.id }}</td>
+                            <td>{{ dates.date_back(items.fechallegada) }}</td>
+                            <td><p style="color: red">{{ items.estadosid.estado }}</p></td>
+                            <td>{{ items.nombre }}</td>
+                            <td>{{ items.casaid.nombre }}</td>
+                            <td>{{ items.casaid.responsable }}</td>
+                            <td>{{ items.casaid.telefono }}</td>
+                            <td>
+                                <div class="btn-group">
+                                    <button data-toggle="dropdown" class="btn btn-default dropdown-toggle">Estados<span
+                                                class="caret"></span></button>
+                                    <ul class="dropdown-menu noclose">
+                                        {% set x=0 %}
+                                        {% for est in estados %}
+                                            <li><a data-toggle="modal"
+                                                   onclick="return correo_dinamico({{ est.id }},{{ items.id }},{{ x }})"
+                                                   href="#destino{{ x }}">{{ est.estado }}</a></li>
+                                            {# incluir el modal aqui #}
+                                            {% set x=x+1 %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                        </tr>
+                        {% set x=0 %}
+                        {% for est in estados %}
+                            {% include 'backend/reservas/modal/modal.html.twig' %}
+                            {% set x=x+1 %}
+                        {% endfor %}
+                        {% set i =i+1 %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <script>
+        function correo_dinamico(id_estado, id_r, x) {
+            $("#correo_dinamico" + x.toString()).load("{{ path('correoestado_dinamico') }}", {
+                'id_estado': id_estado,
+                'id_r': id_r
+            });
+        }
+    </script>
+{% endblock %}

@@ -1,0 +1,191 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    <div class="col-md-12">
+        <hr>
+        <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+            Insertar </a>
+        <hr>
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th> T&iacute;tulo</th>
+                <th> Descripci&oacute;n</th>
+                <th> Direcci&oacute;n</th>
+                <th> Precio</th>
+                <th> Texto</th>
+                <th> URL </th>
+                <th> Imagen</th>
+                <th></th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% set i =0 %}
+            {% for items in puntos %}
+                <tr>
+                    <td> {{ items.titulo }} </td>
+                    <td> {{ items.descripcion }} </td>
+                    <td> {{ items.direccion }} </td>
+                    <td> {{ items.precio }} </td>
+                    <td> {{ items.texto | slice(0, 15) }} </td>
+                    <td> {{ items.url | slice(0, 15) }} </td>
+                    <td><img src="{{ asset(items.imagen) }}" class="img_banner"></td>
+                    <td><a class="btn btn-warning" data-toggle="modal" data-placement="top"
+                           title="Editar" href="#myModal_edit{{ i }}"><i class="glyphicon glyphicon-edit"></i></a>
+                    </td>
+                    <td><a class="btn btn-danger" data-toggle="modal" data-placement="top"
+                           title="Eliminar" href="#myModal{{ i }}"><i class="glyphicon glyphicon-trash"></i></a>
+                    </td>
+                </tr>
+                <!-- Modal para editar Destinos-->
+                <div class="modal fade" id="myModal_edit{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Editar Banner</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form method="post" enctype="multipart/form-data">
+                                    <input type="hidden" name="id" value="{{ items.id }}"/>
+                                    <div class="form-group">
+                                        <label for="_nombre"> T&iacute;tulo <span class="required">*</span></label>
+                                        <input class="form-control" name="titulo_editar" id="_nombre" required=""
+                                               value="{{ items.titulo }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_desc"> Descripci&oacute;n </label>
+                                        <textarea class="form-control" name="descripcion"
+                                                  id="_desc"> {{ items.descripcion }} </textarea>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_dir"> Direcci&oacute;n </label>
+                                        <input class="form-control" name="direccion" id="_dir"
+                                               value="{{ items.direccion }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_precio"> Precio </label>
+                                        <input class="form-control" name="precio" id="_precio"
+                                               value="{{ items.precio }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_texto"> Texto </label>
+                                        <input class="form-control" name="texto" id="_texto"
+                                               value="{{ items.texto }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_url"> URL </label>
+                                        <input class="form-control" name="url" id="_url"
+                                               value="{{ items.url }}"/>
+                                    </div>
+                                    <BR>
+                                    <div class="form-group">
+                                        <label for="_nombre"> Im&aacute;gen 1920x1280</label>
+                                        <input type="file" name="f1"><BR>
+                                        <p>{{ items.imagen }}</p>
+                                    </div>
+                                    <BR><BR>
+                                    <div class="form-group">
+                                        <div class="submit-btn">
+                                            <input class="btn btn-primary" type="submit" value="Editar">
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Modal -->
+                <div class="modal fade" id="myModal{{ i }}" tabindex="-1" role="dialog"
+                     aria-labelledby="myModalLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal"
+                                        aria-hidden="true">&times;</button>
+                                <h4 class="modal-title">Eliminar Banner</h4>
+                            </div>
+                            <div class="modal-body">
+                                Esta seguro que desea eliminar este Banner?
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                                <a href="{{ path('banner_eliminar',{'id': items.id}) }}">
+                                    <button type="button" class="btn btn-primary">S&iacute;</button>
+                                </a>
+                            </div>
+                        </div><!-- /.modal-content -->
+                    </div><!-- /.modal-dialog -->
+                </div><!-- /.modal -->
+                <!-- Modal -->
+                {% set i = i + 1 %}
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+        <!-- Modal para insertar Destinos-->
+        <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Insertar Banner</h4>
+                    </div>
+                    <div class="modal-body">
+                        <form method="post" enctype="multipart/form-data">
+                            <div class="form-group">
+                                <label for="_nombre"> T&iacute;tulo <span class="required">*</span></label>
+                                <input class="form-control" name="titulo" id="_nombre" required=""/>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_desc"> Descripci&oacute;n </label>
+                                <textarea class="form-control" name="descripcion" id="_desc"></textarea>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_dir"> Direcci&oacute;n </label>
+                                <input class="form-control" name="direccion" id="_dir"/>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_precio"> Precio </label>
+                                <input class="form-control" name="precio" id="_precio"/>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_texto"> Texto </label>
+                                <input class="form-control" name="texto" id="_texto"/>
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_url"> URL </label>
+                                <input class="form-control" name="url" id="_url" />
+                            </div>
+                            <BR>
+                            <div class="form-group">
+                                <label for="_nombre"> Im&aacute;gen 1920x1280</label>
+                                <input type="file" name="f1" required><BR>
+                            </div>
+                            <BR><BR>
+                            <div class="form-group">
+                                <div class="submit-btn">
+                                    <input class="btn btn-primary" type="submit" value="Insertar">
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

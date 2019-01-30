@@ -1,0 +1,126 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2>{{ 'registrar.titulo' | trans({}, 'base') }}</h2>
+                        <ol class="breadcrumb">
+                            <li></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-advance-search">
+        <div class="container margin-top2">
+            <div class="col-md-6">
+                <div class="row" id="text-align">
+                    <h2>{{ 'registrar.paso1' | trans({}, 'base') }}</h2>
+                    <hr>
+                    <form method="post" enctype="multipart/form-data" onsubmit="return Validate()">
+                        <div class="form-group">
+                            <label>{{ 'registrar.ubicacion' | trans({}, 'base') }}</label>
+                            <select name="destino" class="form-control" id="_destinoreg">
+                                <option value="">{{ 'registrar.input_ubicacion' | trans({}, 'base') }}</option>
+                                {% for items in destinos %}
+                                    <option value="{{ items.id }}">{{ items.destinoid.nombre }} - {{ items.nombre }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="alert alert-danger" id="dest_error">{{ 'errors.dest' | trans({}, 'base') }}</div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.nombre' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="text" name="nombre" id="n1" 
+                                   placeholder="{{ 'registrar.input_nombre' | trans({}, 'base') }}" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.direccion' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="text" name="direccion" id="n2" 
+                                   placeholder="{{ 'registrar.input_direccion' | trans({}, 'base') }}" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.dueno' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="text" name="responsable" id="n3" 
+                                   placeholder="{{ 'registrar.input_dueno' | trans({}, 'base') }}" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.telefono' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="text" name="telefono" id="n4" 
+                                   placeholder="{{ 'registrar.input_telefono' | trans({}, 'base') }}" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.mail' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="email" name="correo" id="n5" 
+                                   placeholder="{{ 'registrar.input_mail' | trans({}, 'base') }}" required="">
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.desc' | trans({}, 'base') }}</label>
+                            <textarea class="form-control" name="texto" id="n6" ></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label>{{ 'registrar.reglas' | trans({}, 'base') }}</label>
+                            <textarea class="form-control" name="reglas" id="n7" ></textarea>
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="col-md-6 form-group">
+                            <label>{{ 'registrar.cuartos' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="number" name="cuartos" id="n8"
+                                   placeholder="{{ 'registrar.input_cuartos' | trans({}, 'base') }}" required="" >
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>{{ 'registrar.bath' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="number" name="bath" id="n9"
+                                   placeholder="{{ 'registrar.input_bath' | trans({}, 'base') }}" required="" >
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>{{ 'registrar.capacidad' | trans({}, 'base') }}</label>
+                            <input class="form-control" type="number" name="capacidad" id="n10"
+                                   placeholder="{{ 'registrar.input_capacidad' | trans({}, 'base') }}" required="" >
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>{{ 'registrar.precio_alza' | trans({}, 'base') }} </label>
+                            <input class="form-control" type="number" name="precio" id="n11"
+                                   placeholder="{{ 'registrar.input_precio_baja' | trans({}, 'base') }}" required="" >
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <label>{{ 'registrar.precio_baja' | trans({}, 'base') }} </label>
+                            <input class="form-control" type="number" name="precioofertas" id="n12"
+                                   placeholder="{{ 'registrar.input_precio_baja' | trans({}, 'base') }}" required="" >
+                        </div>
+                        <div class="col-md-6 form-group">
+                            <div class="g-recaptcha" data-sitekey="6LejqScUAAAAAGXBP6P6_UXyne4c5cNJ6XaOa-cT"></div>
+                        </div>
+                        <div class="clearfix"></div>
+
+                        <br>
+                        <div class="form-group">
+                            <input class="btn btn-primary" type="submit"
+                                   value=" {{ 'registrar.pasos' | trans({}, 'base') }} ">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        function Validate() {
+            var dest = document.getElementById('_destinoreg').value;
+            var ok= true;
+            if(dest == null || dest == "" || dest.length==0){
+                ok=false;
+            }
+            if(!ok) {
+                document.getElementById('dest_error').style.display = 'block';
+                window.location.href = "#_destinoreg";
+            }
+            else {
+                document.getElementById('dest_error').style.display = 'none';
+            }
+            return ok;
+        }
+    </script>
+{% endblock %}

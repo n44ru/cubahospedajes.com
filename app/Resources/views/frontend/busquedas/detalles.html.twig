@@ -1,0 +1,403 @@
+{% extends 'base_frontend_detalles.html.twig' %}
+
+{% block body %}
+    <div class="parent">
+        <ul id="flexiselDemo3">
+            {% set m = 0 %}
+            {% for items in img_todas %}
+                {% if items.casaid.id == casa.id %}
+                    <li>
+                        <img src="{{ items.imagen |  imagine_filter('banner_crop') }}" alt="{{ items.tags }}" class="banner_detalles">
+                    </li>
+                {% endif %}
+                {% set m = m + 1 %}
+            {% endfor %}
+        </ul>
+    </div>
+    <section id="aa-properties">
+        <section id="aa-blog">
+            <div class="aa-blog-area">
+                <aside class="aa-blog-sidebar">
+                    <div class="aa-blog-sidebar-single">
+                        <div class="tag-cloud">
+                            <a onclick="vistas_show('detalles_show')">{{ 'casas.detalles' | trans({}, 'base') }}</a>
+                            <a onclick="vistas_show('vistas_show')">{{ 'casas.vistas' | trans({}, 'base') }}</a>
+                            <a onclick="vistas_show('comments_show')">{{ 'casas.comentarios' | trans({}, 'base') }}</a>
+                            {% if coo %}
+                            <a href="#_map">{{ 'casas.mapa' | trans({}, 'base') }}</a>
+                            {% endif %}
+                        </div>
+                    </div>
+                </aside>
+            </div>
+        </section>
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="aa-properties-content">
+                        <div class="aa-properties-details">
+                            <div class="col-md-10 margin-top2">
+                                <div class="col-md-8" id="detalles_show">
+                                    <section id="aa-blog">
+                                        <div class="aa-blog-area">
+                                            <aside class="aa-blog-sidebar">
+                                                <div class="aa-blog-sidebar-single">
+                                                    <ul class="aa-blog-catg">
+                                                        <li>
+                                                            <i class="glyphicon glyphicon-bed"> {{ 'casas.cuartos' | trans({}, 'base') }} </i>
+                                                            <span>{{ casa.cuartos }}</span></li>
+                                                        <li>
+                                                            <i class="glyphicon glyphicon-home"> {{ 'casas.capacidad' | trans({}, 'base') }} </i>
+                                                            <span>{{ casa.capacidad }}</span></li>
+                                                        <li>
+                                                            <i class="glyphicon glyphicon-bell"> {{ 'casas.bath' | trans({}, 'base') }} </i>
+                                                            <span>{{ casa.bath }}</span></li>
+                                                        <BR>
+                                                        {% for items in etiquetas %}
+                                                            <li>
+                                                                <i class="glyphicon glyphicon-check"></i> {{ items.etiquetasid.nombre }}
+                                                            </li>
+                                                        {% endfor %}
+                                                        <BR>
+                                                        <li>
+                                                            <i class="glyphicon glyphicon-euro"> {{ 'casas.precio' | trans({}, 'base') }} </i>
+                                                            <span>${{ casa.precio }}</span></li>
+                                                        <BR>
+                                                        <li>
+                                                            <i class="glyphicon glyphicon-map-marker"> {{ casa.direccion }}</i>
+                                                        </li>
+                                                        {% for c in coo %}
+                                                            {% if c.casaid.id == casa.id %}
+                                                                <li>
+                                                                    <i class="glyphicon glyphicon-globe"> {{ c.latitud }}
+                                                                        , {{ c.longitud }}</i>
+                                                                </li>
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                        <BR>
+                                                        <li>
+                                                            <strong> {{ 'casas.descripcion' | trans({}, 'base') }} </strong>
+                                                            <p class="detalles_p">{{ casa.texto }}</p>
+                                                        </li>
+                                                        <BR>
+                                                        <li>
+                                                            <strong> {{ 'casas.reglas' | trans({}, 'base') }} </strong>
+                                                            <p class="detalles_p">{{ casa.reglas }}</p>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </aside>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div class="col-md-10" id="vistas_show">
+                                    <section id="aa-gallery">
+                                        <div class="container">
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="aa-gallery-area">
+                                                        <!-- Start gallery -->
+                                                        <div class="aa-gallery-content">
+                                                            <!-- Start gallery image -->
+                                                            <div id="mixit-container" class="aa-gallery-body">
+                                                                {% for items2 in img_todas | slice(0, 11)%}
+                                                                    <div class="aa-single-gallery">
+                                                                        <div class="aa-single-gallery-item">
+                                                                            {% if items2.casaid.id == casa.id %}
+                                                                            <div class="aa-single-gallery-img">
+                                                                                <a><img src="{{ items2.imagen |  imagine_filter('gallery_view') }}" alt="{{ items2.tags }}" class="img-thumbnail"></a>
+                                                                            </div>
+                                                                            <div class="aa-single-gallery-info">
+                                                                                <a class="fancybox" data-fancybox-group="gallery"
+                                                                                   href="{{ asset(items2.imagen) }}"><span class="fa fa-eye"></span></a>
+                                                                            </div>
+                                                                            {% endif %}
+                                                                        </div>
+                                                                    </div>
+                                                                {% endfor %}
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                <div id="comments_show" class="col-md-12">
+                                    <section id="aa-blog">
+                                        <div class="container">
+                                            <div class="col-md-12">
+                                                <div class="aa-blog-area">
+                                                    <div class="row">
+                                                        <div class="col-md-6">
+                                                            <div class="aa-blog-content">
+                                                                <div class="aa-comments-area">
+                                                                    <div class="comments">
+                                                                        <ul class="commentlist">
+                                                                            {% for tt in testimonios %}
+                                                                                <li>
+                                                                                    {% if tt.casaid %}
+                                                                                    {% if tt.casaid.id == casa.id  and tt.activo == 'Si'%}
+                                                                                    <div class="media">
+                                                                                        <div class="yellow-star">
+                                                                                            {% if tt.rating == 0 %}
+                                                                                                <p> No Stars</p>
+                                                                                            {% endif %}
+                                                                                            {% if tt.rating == 1 %}
+                                                                                                <p>
+                                                                                                    <i class="glyphicon glyphicon-star"></i>
+                                                                                                </p>
+                                                                                            {% endif %}
+                                                                                            {% if tt.rating == 2 %}
+                                                                                                <p>
+                                                                                                    {% for j in 0..1 %}
+                                                                                                        <i class="glyphicon glyphicon-star"></i>
+                                                                                                    {% endfor %}
+                                                                                                </p>
+                                                                                            {% endif %}
+                                                                                            {% if tt.rating == 3 %}
+                                                                                                <p>
+                                                                                                    {% for j in 0..2 %}
+                                                                                                        <i class="glyphicon glyphicon-star"></i>
+                                                                                                    {% endfor %}
+                                                                                                </p>
+                                                                                            {% endif %}
+                                                                                            {% if tt.rating == 4 %}
+                                                                                                <p>
+                                                                                                    {% for j in 0..3 %}
+                                                                                                        <i class="glyphicon glyphicon-star"></i>
+                                                                                                    {% endfor %}
+                                                                                                </p>
+                                                                                            {% endif %}
+                                                                                            {% if tt.rating == 5 %}
+                                                                                                <p>
+                                                                                                    {% for j in 0..4 %}
+                                                                                                        <i class="glyphicon glyphicon-star"></i>
+                                                                                                    {% endfor %}
+                                                                                                </p>
+                                                                                            {% endif %}
+                                                                                        </div>
+                                                                                        <div class="media-body">
+                                                                                            <h4 class="author-name">{{ tt.nombre }}</h4>
+                                                                                            <p>{{ tt.comentario | slice(0,150) }}</p>
+                                                                                            <span class="comments-date"> {{ tt.fecha }}</span>
+                                                                                        </div>
+                                                                                    </div>
+                                                                                        <hr>
+                                                                                    {% endif %}
+                                                                                    {% endif %}
+                                                                                </li>
+                                                                            {% endfor %}
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+
+                                                                <div class="col-md-12">
+                                                                    <div id="respond">
+                                                                        <h3 class="reply-title">{{ 'comentarios.titulo' | trans({}, 'base') }}</h3>
+                                                                        <form method="post" id="commentform">
+                                                                            <input type="hidden"
+                                                                                   name="casaid_test"
+                                                                                   value="{{ casa.id }}">
+                                                                            <p class="comment-form-author">
+                                                                                <label for="author">{{ 'comentarios.nombre' | trans({}, 'base') }}
+                                                                                    <span
+                                                                                            class="required">*</span></label>
+                                                                                <input type="text"
+                                                                                       required="required"
+                                                                                       size="30" value=""
+                                                                                       name="nombre_t" maxlength="15">
+                                                                            </p>
+                                                                            <p class="comment-form-comment">
+                                                                                <label for="comment">{{ 'comentarios.comentario' | trans({}, 'base') }}</label>
+                                                                                <textarea required="required"
+                                                                                          aria-required="true"
+                                                                                          rows="8"
+                                                                                          cols="45"
+                                                                                          name="comentarios_t" maxlength="40"></textarea>
+                                                                            </p>
+                                                                            <p class="comment-form-comment">
+                                                                                <label for="input-1"
+                                                                                       class="control-label">Rate
+                                                                                    This</label>
+                                                                                <input id="input-1"
+                                                                                       name="input-1"
+                                                                                       class="rating rating-loading"
+                                                                                       data-min="0" data-max="5"
+                                                                                       data-step="1">
+                                                                            </p>
+                                                                            {# Google reCaptcha #}
+                                                                            <div class="col-md-6 form-group">
+                                                                                <div class="g-recaptcha" data-sitekey="6LejqScUAAAAAGXBP6P6_UXyne4c5cNJ6XaOa-cT"></div>
+                                                                            </div>
+                                                                            {# end #}
+                                                                            <p class="form-submit">
+                                                                                <input type="submit"
+                                                                                       value="Post Comment"
+                                                                                       class="aa-browse-btn"
+                                                                                       name="submit">
+                                                                            </p>
+                                                                        </form>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </section>
+                                </div>
+                                {% if coo %}
+                                <div class="col-md-12">
+                                    <h3>{{ 'detalles.loc' | trans({}, 'base') }}</h3>
+                                    <div id="_map">
+                                        <div id="googleMap" class="mapa_google"></div>
+                                    </div>
+                                    <BR>
+                                    <div class="clearfix"></div>
+                                </div>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <aside class="aa-properties-sidebar" id="border_red">
+                        <div class="aa-properties-single-sidebar">
+                            <form method="post">
+                                <input type="hidden" name="casaid" value="{{ casa.id }}">
+                                <div class="col-md-12" id="bookid">
+                                    <div class="aa-single-advance-search">
+                                        <label for="fecha_llegada"> {{ 'portada.fecha1' | trans({}, 'base') }} </label>
+                                        <div class="input-group">
+                                            <div class="input-group-addon">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        <input class="form-control pull-right" name="fecha1" id="fecha3" autocomplete="off" required=""/>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="clearfix"></div>
+                                <div class="col-md-6">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_guest"> {{ 'portada.guest' | trans({}, 'base') }} </label>
+                                        <select class="form-control" name="guest" id="_guest" onchange="setCache()">
+                                            <option value="1" selected>1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="5+">{{ 'portada.guest5' | trans({}, 'base') }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_habitaciones"> {{ 'reserva.hab' | trans({}, 'base') }} </label>
+                                        <select class="form-control" name="habitaciones" id="_habitaciones" onchange="setCache()">
+                                            <option value="1" selected>1</option>
+                                            <option value="2">2</option>
+                                            <option value="3">3</option>
+                                            <option value="4">4</option>
+                                            <option value="5">5</option>
+                                            <option value="5+">{{ 'portada.guest5' | trans({}, 'base') }}</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_nombre"> {{ 'reserva.nombre' | trans({}, 'base') }} </label>
+                                        <input type="text" class="form-control" name="nombre" id="_nombre"
+                                               required="" maxlength="30" onkeyup="setCache()"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_pais"> {{ 'reserva.pais' | trans({}, 'base') }} </label>
+                                        <input type="text" class="form-control" name="pais" id="_pais" maxlength="30" onkeyup="setCache()"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_email"> {{ 'reserva.mail' | trans({}, 'base') }} </label>
+                                        <input type="email" class="form-control" name="email" id="_email"
+                                               required="" maxlength="30" onkeyup="setCache()"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_phone"> {{ 'reserva.telefono' | trans({}, 'base') }} </label>
+                                        <input type="number" class="form-control" name="phone" id="_phone"
+                                               required="" maxlength="30" onkeyup="setCache()"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_datosvuelo"> {{ 'reserva.datosvuelo' | trans({}, 'base') }} </label>
+                                        <textarea class="form-control" name="datosvuelo"
+                                                  id="_datosvuelo" maxlength="50" onkeyup="setCache()"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_hora"> {{ 'reserva.horallegada' | trans({}, 'base') }} </label>
+                                        <input type="number" class="form-control" name="horallegada"
+                                               id="_hora" maxlength="5" onkeyup="setCache()"/>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="aa-single-advance-search">
+                                        <label for="_comentarios"> {{ 'reserva.comentarios' | trans({}, 'base') }} </label>
+                                        <textarea class="form-control" name="comentarios"
+                                                  id="_comentarios" maxlength="100" onkeyup="setCache()"></textarea>
+                                    </div>
+                                </div>
+                                {# Google reCaptcha #}
+                                <div class="col-md-6 form-group">
+                                    <div class="g-recaptcha" data-sitekey="6LejqScUAAAAAGXBP6P6_UXyne4c5cNJ6XaOa-cT"></div>
+                                </div>
+                                {# end #}
+                                <div class="aa-single-advance-search">
+                                    <input type="submit" value="{{ 'reserva.reservar' | trans({}, 'base') }}"
+                                           class="aa-search-btn">
+                                </div>
+                            </form>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- recaptcha API -->
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script>
+
+        document.getElementById('_nombre').value = sessionStorage.getItem("book_nombre");
+        document.getElementById('_pais').value = sessionStorage.getItem("book_pais");
+        document.getElementById('_email').value = sessionStorage.getItem("book_email");
+        document.getElementById('_phone').value = sessionStorage.getItem("book_phone");
+        document.getElementById('_datosvuelo').value = sessionStorage.getItem("book_datosvuelo");
+        document.getElementById('_hora').value = sessionStorage.getItem("book_hora");
+        document.getElementById('_comentarios').value = sessionStorage.getItem("book_comentarios");
+
+        function setCache() {
+            var fecha_1 = document.getElementById('fecha_llegada3').value;
+            var book_nombre = document.getElementById('_nombre').value;
+            var book_pais = document.getElementById('_pais').value;
+            var book_email = document.getElementById('_email').value;
+            var book_phone = document.getElementById('_phone').value;
+            var book_datosvuelo = document.getElementById('_datosvuelo').value;
+            var book_hora = document.getElementById('_hora').value;
+            var book_comentarios = document.getElementById('_comentarios').value;
+            sessionStorage.setItem("Fecha1", fecha_1);
+            sessionStorage.setItem("book_nombre", book_nombre);
+            sessionStorage.setItem("book_pais", book_pais);
+            sessionStorage.setItem("book_email", book_email);
+            sessionStorage.setItem("book_phone", book_phone);
+            sessionStorage.setItem("book_datosvuelo", book_datosvuelo);
+            sessionStorage.setItem("book_hora", book_hora);
+            sessionStorage.setItem("book_comentarios", book_comentarios);
+        }
+    </script>
+{% endblock %}

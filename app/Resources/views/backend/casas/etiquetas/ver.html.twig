@@ -1,0 +1,71 @@
+{% extends 'base_backend.html.twig' %}
+
+{% block body %}
+    <div class="col-md-12">
+        <hr>
+        <a class="btn btn-success" data-toggle="modal" data-placement="top" href="#myModal_insert">
+            Insertar </a>
+        <hr>
+        <table class="table dynamic">
+            <thead>
+            <tr>
+                <th> Etiquetas</th>
+                <th></th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for items in ce %}
+                <tr>
+                    <td> {{ items.etiquetasid.nombre }} </td>
+                    <td><a class="btn btn-danger" data-toggle="tooltip" data-placement="top" title="Eliminar"
+                           href="{{ path('ce_eliminar',{'id': items.id, 'casaid': casa.id}) }}"><i
+                                    class="glyphicon glyphicon-trash"></i></a></td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+        <div class="clearfix"></div>
+    </div>
+    <!-- Modal para insertar Destinos-->
+    <div class="modal fade" id="myModal_insert" tabindex="-1" role="dialog" aria-labelledby="myModalLabel"
+         aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Asociar Etiquetas a {{ casa.nombre }}</h4>
+                </div>
+                <div class="modal-body">
+                    <form method="post">
+                        {% set i = 0 %}
+                        {% for items in etiquetas %}
+                            <div class="col-md-3">
+                                {% set find='false' %}
+                                {% for items2 in ce %}
+                                    {% if items.nombre == items2.etiquetasid.nombre %}
+                                        <input type="checkbox" name="et{{ i }}" value="{{ items.id }}"
+                                               checked> <strong>{{ items.nombre }}</strong>
+                                        <BR>
+                                        {% set find='true' %}
+                                    {% endif %}
+                                {% endfor %}
+                                {% if find=='false' %}
+                                    <input type="checkbox" name="et{{ i }}" value="{{ items.id }}">
+                                    <strong>{{ items.nombre }}</strong>
+                                    <BR>
+                                {% endif %}
+                            </div>
+                            {% set i = i+1 %}
+                        {% endfor %}
+                        <BR><BR>
+                        <div class="comment-form-author">
+                            <div class="submit-btn">
+                                <input class="btn btn-primary" type="submit" value="Insertar">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}

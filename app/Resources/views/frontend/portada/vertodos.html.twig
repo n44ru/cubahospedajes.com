@@ -1,0 +1,79 @@
+{% extends 'base_frontend_detalles.html.twig' %}
+
+{% block body %}
+    <section id="aa-latest-blog">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-latest-blog-area">
+                        <div class="aa-title">
+                            <h2>{{ 'poi.texto' | trans({}, 'base') }}</h2>
+                            <span></span>
+                        </div>
+                        <div class="aa-latest-blog-content">
+                            <div class="row">
+                                {% set idx = 0 %}
+                                {% for p in poi %}
+                                    {% set slug1 = slugger.slugify(p.subdestinosid.destinoid.nombre) %}
+                                    {% set slug2 = slugger.slugify(p.subdestinosid.nombre) %}
+                                    {% set slug3 = slugger.slugify(p.nombre) %}
+                                    <div class="col-md-4">
+                                        <article class="aa-blog-single fix_2">
+                                            <figure class="aa-blog-img">
+                                                <div id="carousel-poi-{{ idx }}" class="carousel slide">
+                                                    <div class="carousel-inner">
+                                                        {% set z = 0 %}
+                                                        {% for i in img_puntos %}
+                                                            {% if i.Puntosid.id == p.id %}
+                                                                <div class="item{% if z == 0 %} active{% endif %}">
+                                                                    <img src="{{ i.imagen |  imagine_filter('detalles_view') }}"
+                                                                         alt="{{ i.tags }}" class="img_auto">
+                                                                </div>
+                                                                {% set z = z + 1 %}
+                                                            {% endif %}
+                                                        {% endfor %}
+                                                    </div>
+                                                    <a href="{{ path('puntos_cercanias',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"><span
+                                                                class="aa-date-tag-poi">{{ p.nombre }}</span></a>
+                                                    <a class="left carousel-control"
+                                                       href="#carousel-poi-{{ idx }}"
+                                                       data-slide="prev">
+                                                        <span class="icon-prev"></span>
+                                                    </a>
+                                                    <a class="right carousel-control"
+                                                       href="#carousel-poi-{{ idx }}"
+                                                       data-slide="next">
+                                                        <span class="icon-next"></span>
+                                                    </a>
+                                                </div>
+                                            </figure>
+                                            <div class="aa-blog-single-content">
+                                                <div class="aa-blog-single-bottom">
+
+                                                    {% for c in casas | slice(0, 15) %}
+                                                        {% set slug1 = slugger.slugify(c.subdestinosid.destinoid.nombre) %}
+                                                        {% set slug2 = slugger.slugify(c.subdestinosid.nombre) %}
+                                                        {% set slug3 = slugger.slugify(c.nombre) %}
+                                                        {% if c.subdestinosid.id == p.subdestinosid.id %}
+                                                            {% if c.activa == 'Si' %}
+                                                                <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}"
+                                                                   class="aa-blog-author"><i
+                                                                            class="fa fa-home"></i> {{ c.nombre }}</a>
+                                                                <div class="clearfix"></div>
+                                                            {% endif %}
+                                                        {% endif %}
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        </article>
+                                    </div>
+                                    {% set idx = idx + 1 %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+{% endblock %}

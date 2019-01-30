@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="keywords" content="{{ global_keywords }}">
+    <meta name="description" content="{{ global_description }}">
+    <meta name="author" content="">
+    <title>{% block title %}{{ global_title }}{% endblock %}</title>
+    {% block stylesheets %}
+        <link href="{{ asset('css/font-awesome.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/bootstrap.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/gallery/flexisel.css') }}" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="{{ asset('css/slick.css') }}">
+        <link rel="stylesheet" href="{{ asset('css/jquery.fancybox.css') }}" type="text/css" media="screen"/>
+        <link id="switcher" href="{{ asset('css/theme-color/default-theme.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/style_detalles.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/datepicker/daterangepicker.css') }}" rel="stylesheet" type="text/css"/>
+        <link href="{{ asset('css/rating/star-rating.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/select2/select2.min.css') }}" rel="stylesheet">
+        <link href="{{ asset('css/mios/mio.css') }}" rel="stylesheet">
+    {% endblock %}
+</head>
+<body>
+<div id="aa-preloader-area">
+    <div class="pulse"></div>
+</div>
+<a class="scrollToTop" href="#"><i class="fa fa-angle-double-up"></i></a>
+<section id="aa-menu-area">
+    <nav class="navbar navbar-default main-navbar" role="navigation">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
+                        aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a class="navbar-brand aa-logo" href="{{ path('homepage') }}"> {{ global_title }} </a>
+                {% if book_btn == 'Si' %}
+                <a class="navbar-brand aa-logo-book" href="#bookid" onclick="setborder()">{{ 'reserva.reservar' | trans({}, 'base') }}</a>
+                {% endif %}
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul id="top-menu" class="nav navbar-nav navbar-right aa-main-nav">
+                    <li><a class="back_ligero" href="{{ path('homepage') }}">{{ 'menu.home' | trans({}, 'base') }}</a>
+                    </li>
+                    <li><a href="{{ path('casas_todas') }}">{{ 'menu.places' | trans({}, 'base') }}</a></li>
+                    <li><a href="{{ path('gallery_front') }}">{{ 'menu.gallery' | trans({}, 'base') }}</a></li>
+                    <li><a href="{{ path('registro') }}">{{ 'menu.join' | trans({}, 'base') }}</a></li>
+                    {% if is_granted('ROLE_ADMIN') %}
+                        <li><a href="{{ path('dashboard') }}">ADMIN</a></li>
+                    {% endif %}
+                </ul>
+            </div>
+        </div>
+    </nav>
+</section>
+{% block body %}
+
+{% endblock %}
+<footer id="aa-footer">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="aa-footer-area">
+                    <div class="row">
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="aa-footer-left">
+                                <p>Home Property &copy; 2017</p>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-6 col-xs-12">
+                            <div class="aa-footer-middle">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-google-plus"></i></a>
+                                <a href="#"><i class="fa fa-youtube"></i></a>
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-sm-12 col-xs-12">
+                            <div class="aa-footer-right">
+                                <a class="back_ligero"
+                                   href="{{ path('homepage') }}">{{ 'menu.home' | trans({}, 'base') }}</a>
+                                <a href="{{ path('casas_todas') }}">{{ 'menu.places' | trans({}, 'base') }}</a>
+                                <a href="{{ path('gallery_front') }}">{{ 'menu.gallery' | trans({}, 'base') }}</a>
+                                <a href="{{ path('registro') }}">{{ 'menu.join' | trans({}, 'base') }}</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>
+{% block javascripts %}
+    <script src="{{ asset('js/jquery.min.js') }}"></script>
+    <script src="{{ asset('js/bootstrap.js') }}"></script>
+    <script src="{{ asset('js/gallery/jquery.flexisel.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/slick.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.mixitup.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/jquery.fancybox.pack.js') }}"></script>
+    <script src="{{ asset('js/custom.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datepicker/moment.min.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/datepicker/daterangepicker.js') }}"></script>
+    <script src="{{ asset('js/rating/star-rating.js') }}"></script>
+    <script src="{{ asset('js/select2/select2.min.js') }}"></script>
+    {#<script type="text/javascript" src="{{ asset('js/location/locationpicker.jquery.js') }}"></script>#}
+    <script src="{{ asset('js/mios/mio.js') }}"></script>
+    <script>
+        $(window).load(function () {
+            $("#flexiselDemo3").flexisel({
+                visibleItems: 4,
+                itemsToScroll: 1,
+                autoPlay: {
+                    enable: true,
+                    interval: 5000,
+                    pauseOnHover: false
+                }
+            });
+        });
+    </script>
+    {% if coo | length > 0 %}
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyBp1HLjK8sZ6UIAoME5Jr6XDMSN3z1u-yU"></script>
+    <script>
+        function initialize() {
+            gMap = new google.maps.Map(document.getElementById('googleMap'));
+            gMap.setZoom(20);
+            gMap.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+            //
+            var marker = new google.maps.Marker({
+                position: new google.maps.LatLng({{ coo.latitud }}, {{ coo.longitud }}),
+                animation: google.maps.Animation.BOUNCE
+            });
+            marker.setMap(gMap);
+            // Set Center
+            var latLng = marker.getPosition();
+            gMap.setCenter(latLng);
+            //
+            var circle = new google.maps.Circle({
+                map: gMap,
+                radius: 50,
+                fillColor: '#AA0000'
+            });
+            circle.bindTo('center', marker, 'position');
+
+        }
+        google.maps.event.addDomListener(window, 'load', initialize);
+        //
+    </script>
+    {% endif %}
+{% endblock %}
+</body>
+</html>

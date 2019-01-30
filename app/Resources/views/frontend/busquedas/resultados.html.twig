@@ -1,0 +1,281 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2>{{ 'pagina.titulo' | trans({}, 'base') }}</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="aa-properties">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-8">
+                    <div class="aa-properties-content">
+                        <!-- start properties content head -->
+                        <div class="col-md-12 aa-properties-content-head">
+                            <form method="get" action="{{ path('search_filter') }}" onsubmit="return Save_filter()">
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                <div class="input-group-addon">
+                                <i class="fa fa-search"></i>
+                                </div>
+                                <select class="form-control" name="sort" id="_sort">
+                                <option value="name">{{ 'ordenar.nombre' | trans({}, 'base') }}</option>
+                                <option value="price">{{ 'ordenar.precio' | trans({}, 'base') }}</option>
+                                <option value="rooms">{{ 'ordenar.cuartos' | trans({}, 'base') }}</option>
+                                </select>
+                                </div>
+                            </div>
+                            <div class="col-md-5">
+                                <div class="input-group">
+                                <div class="input-group-addon">
+                                <i class="fa fa-sort-alpha-asc"></i>
+                                </div>
+                                <select class="form-control" name="mode" id="_mode">
+                                <option value="ASC">{{ 'ordenar.asc' | trans({}, 'base') }}</option>
+                                <option value="DESC">{{ 'ordenar.desc' | trans({}, 'base') }}</option>
+                                </select>
+                                </div>
+                            </div>
+                                <input type="hidden" name="text" id="_text" value="">
+                                <input type="hidden" name="date" id="_date" value="">
+                                <input type="hidden" name="guest" id="_guest" value="">
+                                <input type="hidden" name="room" id="_room" value="">
+                                <input type="hidden" name="min_price" id="_min" value="">
+                                <input type="hidden" name="max_price" id="_max" value="">
+                                <div class="col-md-2">
+                                    <button type="submit" class="btn btn-primary" title="Filter"><i class="fa fa-filter"></i> </button>
+                                </div>
+                            </form>
+                        </div>
+                        <!-- Start properties content body -->
+                        <div class="aa-properties-content-body" id="dinamico_resultados">
+                            {% block dinamico %}
+                                <ul class="aa-properties-nav">
+                                    {% set j=0 %}
+                                    {% for items in casas %}
+                                        {% set i=0 %}
+                                        <li>
+                                            <article class="aa-properties-item">
+                                                <a class="aa-properties-item-img">
+                                                    <div id="carousel-example-generic-{{ j }}" class="carousel slide">
+                                                        <div class="carousel-inner">
+                                                            {% for items2 in imagenes %}
+                                                                {% if  items2.casaid.id == items.id %}
+                                                                    <div class="item{% if i == 0 %} active{% endif %}">
+                                                                        <img alt="{{ items2.tags }}" class="img_slider"
+                                                                             src="{{ items2.imagen |  imagine_filter('detalles_view') }}">
+                                                                    </div>
+                                                                    {% set i=i+1 %}
+                                                                {% endif %}
+                                                            {% endfor %}
+                                                        </div>
+                                                        <!-- Controls -->
+                                                        <a class="left carousel-control c-left-class"
+                                                           href="#carousel-example-generic-{{ j }}" data-slide="prev">
+                                                            <span class="icon-prev"></span>
+                                                        </a>
+                                                        <a class="right carousel-control c-right-class"
+                                                           href="#carousel-example-generic-{{ j }}" data-slide="next">
+                                                            <span class="icon-next"></span>
+                                                        </a>
+                                                    </div>
+                                                </a>
+                                                {% set flag = 'false' %}
+                                                {% for i in reservadas %}
+                                                    {% if i.ocupadaid == items.id and flag == 'false' %}
+                                                        <div class="aa-tag sold-out">
+                                                            {{ 'search.ocupada' | trans({}, 'base') }}
+                                                        </div>
+                                                        {% set flag = 'true' %}
+                                                    {% endif %}
+                                                    {% if i.ocupadaid != items.id and flag == 'false' %}
+                                                        <div class="aa-tag for-rent">
+                                                            {{ 'search.noocupada' | trans({}, 'base') }}
+                                                        </div>
+                                                        {% set flag = 'true' %}
+                                                    {% endif %}
+                                                {% endfor %}
+                                                {% if flag=='false' %}
+                                                    <div class="aa-tag for-rent">
+                                                        {{ 'search.noocupada' | trans({}, 'base') }}
+                                                    </div>
+                                                {% endif %}
+                                                {% set slug1 = slugger.slugify(items.subdestinosid.destinoid.nombre) %}
+                                                {% set slug2 = slugger.slugify(items.subdestinosid.nombre) %}
+                                                {% set slug3 = slugger.slugify(items.nombre) %}
+                                                <div class="aa-properties-item-content">
+                                                    <div class="aa-properties-info">
+                                                        <span>{{ items.cuartos }} {{ 'casas.cuartos' | trans({}, 'base') }}</span>
+                                                        <span>{{ items.bath }} {{ 'casas.bath' | trans({}, 'base') }}</span>
+                                                        <span>{{ items.capacidad }} {{ 'casas.capacidad' | trans({}, 'base') }}</span>
+                                                    </div>
+                                                    <div class="aa-properties-about">
+                                                        <p><strong>
+                                                                <a href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ items.nombre }}
+                                                                    - {{ items.subdestinosid.nombre }}
+                                                                    - {{ items.subdestinosid.destinoid.nombre }}</a></strong>
+                                                        </p>
+                                                        <p>{{ items.direccion }}</p>
+                                                    </div>
+                                                    <div class="aa-properties-detial">
+                                                    <span class="aa-price red_text">
+                                                        ${{ items.precio }}{{ 'search.cuc' | trans({}, 'base') }}
+                                                    </span>
+                                                    </div>
+                                                    <div class="aa-properties-detial">
+                                                        <a class="aa-secondary-btn"
+                                                           href="{{ path('detalles_casa',{'dest': slug1 ,'subdest': slug2,'name': slug3 }) }}">{{ 'search.verdetalles' | trans({}, 'base') }}</a>
+                                                    </div>
+                                                </div>
+                                            </article>
+                                        </li>
+                                        {% set j = j+1 %}
+                                    {% endfor %}
+                                </ul>
+                            {% endblock %}
+                        </div>
+                        <div class="clearfix"></div>
+                        <div class="navigation">
+                            {{ knp_pagination_render(casas) }}
+                        </div>
+                    </div>
+                </div>
+                <!-- Start properties sidebar -->
+                <div class="col-md-4 always_on_top">
+                    <aside class="aa-properties-sidebar">
+                        <!-- Start Single properties sidebar -->
+                        <div class="aa-properties-single-sidebar">
+                            <h3>{{ 'search.busqueda' | trans({}, 'base') }}</h3>
+                            <form method="get" onsubmit="return Save()" action="{{ path('search_advanced') }}">
+                            <div class="aa-single-advance-search">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-search"></i>
+                                    </div>
+                                    <select name="text" class="js-example-basic-single" id="_text_adv">
+                                        {#<option value="{{ textos.texto_raw }}">{{ textos.texto_ok }}</option>#}
+                                        {% for items in destinos %}
+                                            <option value="d_{{ items.nombre }}">{{ items.nombre }}</option>
+                                        {% endfor %}
+                                        {% for items in subdestinos %}
+                                            <option value="s_{{ items.nombre }}">{{ items.destinoid.nombre }} - {{ items.nombre }}</option>
+                                        {% endfor %}
+                                        {% for items in casas %}
+                                            <option value="c_{{ items.nombre }}">{{ items.subdestinosid.destinoid.nombre }} - {{ items.subdestinosid.nombre }} - {{ items.nombre }}</option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="aa-single-advance-search">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-calendar"></i>
+                                    </div>
+                                    <input id="fecha_llegada2" type="text" class="pull-right" name="date"
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="aa-single-advance-search">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <input id="_ad_minprice" class="form-control" type="number" name="min_price"
+                                           placeholder="{{ 'search.minprecio' | trans({}, 'base') }}" required=""
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="aa-single-advance-search">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-money"></i>
+                                    </div>
+                                    <input id="_ad_maxprice" class="form-control" type="number" name="max_price"
+                                           placeholder="{{ 'search.maxprecio' | trans({}, 'base') }}" required=""
+                                           autocomplete="off">
+                                </div>
+                            </div>
+                            <div class="aa-single-advance-search">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-bed"></i>
+                                    </div>
+                                    <select id="_ad_room" name="room" class="form-control">
+                                        <option value="1" selected>1 {{ 'reserva.hab1' | trans({}, 'base') }}</option>
+                                        <option value="2">2 {{ 'reserva.hab' | trans({}, 'base') }}</option>
+                                        <option value="3">3 {{ 'reserva.hab' | trans({}, 'base') }}</option>
+                                        <option value="4">4 {{ 'reserva.hab' | trans({}, 'base') }}</option>
+                                        <option value="5">5 {{ 'reserva.hab' | trans({}, 'base') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="aa-single-advance-search">
+                                <div class="input-group">
+                                    <div class="input-group-addon">
+                                        <i class="fa fa-users"></i>
+                                    </div>
+                                    <select name="guest" id="_guest_adv" class="form-control">
+                                        <option value="1" selected>1 {{ 'portada.guest1' | trans({}, 'base') }}</option>
+                                        <option value="2">2 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                        <option value="3">3 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                        <option value="4">4 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                        <option value="5">5 {{ 'portada.guest' | trans({}, 'base') }}</option>
+                                        <option value="5+">{{ 'portada.guest5' | trans({}, 'base') }}</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="aa-single-advance-search">
+                                <input type="submit" class="aa-search-btn" value="{{ 'search.buscar' | trans({}, 'base') }}">
+                            </div>
+                            </form>
+                        </div>
+                    </aside>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script>
+        document.getElementById('_ad_minprice').value = 0;
+        document.getElementById('_ad_maxprice').value = 150;
+        document.getElementById('_text_adv').value = sessionStorage.getItem("Texto");
+        document.getElementById('_guest_adv').value = sessionStorage.getItem("Guest");
+        {# Fill the hiddens inputs #}
+        document.getElementById('_text').value = sessionStorage.getItem("Texto");
+        document.getElementById('_date').value = sessionStorage.getItem("Fecha1");
+        document.getElementById('_guest').value = sessionStorage.getItem("Guest");
+        document.getElementById('_room').value = document.getElementById('_ad_room').value;
+        document.getElementById('_min').value = document.getElementById('_ad_minprice').value;
+        document.getElementById('_max').value = document.getElementById('_ad_maxprice').value;
+        if(sessionStorage.getItem("sort")){
+            document.getElementById('_sort').value=sessionStorage.getItem("sort");
+        }
+        if(sessionStorage.getItem("mode")){
+            document.getElementById('_mode').value=sessionStorage.getItem("mode");
+        }
+        function Save() {
+            var texto = document.getElementById('_text_adv').value;
+            var guest = document.getElementById('_guest_adv').value;
+            var fecha1 = document.getElementById('fecha_llegada2').value;
+            sessionStorage.setItem("Texto", texto);
+            sessionStorage.setItem("Guest", guest);
+            sessionStorage.setItem("Fecha1", fecha1);
+            return true;
+        }
+        function Save_filter() {
+            var s = document.getElementById('_sort').value;
+            var m = document.getElementById('_mode').value;
+            sessionStorage.setItem("sort", s);
+            sessionStorage.setItem("mode", m);
+            return true;
+        }
+    </script>
+{% endblock %}

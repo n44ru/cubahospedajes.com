@@ -1,0 +1,65 @@
+{% block correo %}
+    <form method="post">
+        <hr>
+        <strong>Cliente:</strong>
+        {% if pre.email != '' %}
+        <input type="checkbox" checked="checked" id="id_email_cliente" name="ch_email_cliente"
+               value="{{ pre.email }}"> {{ pre.email }}<BR>
+        {% else %}
+            <p> No existe el correo del Cliente</p>
+        {% endif %}
+        <strong>Due&ntilde;o del Apartamento:</strong>
+        {% if pre.casaid.correo != '' %}
+        <input type="checkbox" checked="checked" id="id_email_casa" name="ch_email_casa"
+               value="{{ pre.casaid.correo }}"> {{ pre.casaid.correo }}<BR>
+        {% else %}
+            <p> No existe el correo del due&ntilde;o de la Casa</p>
+        {% endif %}
+        <strong>Admin. del Subdestino:</strong>
+        {% if pre.casaid.subdestinosid.email != '' %}
+        <input type="checkbox" checked="checked" id="id_email_subdestino" name="ch_email_subdestino"
+               value="{{ pre.casaid.subdestinosid.email }}"> {{ pre.casaid.subdestinosid.email }}
+        {% else %}
+            <p> No existe un correo de destino.</p>
+        {% endif %}
+        <BR>
+        <strong>Admin. General del Sitio:</strong>
+        {% if config.emailglobal != '' %}
+        <input type="checkbox" checked="checked" id="id_email_global" name="ch_email_global"
+               value="{{ config.emailglobal }}"> {{ config.emailglobal }}
+        {% else %}
+            <p> No existe un correo global de admin.</p>
+        {% endif %}
+        <hr>
+        <input type="hidden" name="id" value="{{ pre.id }}">
+        {% if correoestados | length > 0 %}
+            <input type="checkbox" name="sendemail" value="sendemail" checked="checked">
+            Send this E-Mail
+            <input type="hidden" name="id_estado" value="{{ estado.id }}">
+            <select class="form-control" id="dd_mail" name="mail_id" onchange="onmailclick()">
+                <option value=""> Seleccione un E-Mail</option>
+                {% for c in correoestados %}
+                    <option value="{{ c.correosid.id }}">{{ c.correosid.titulo }}</option>
+                {% endfor %}
+            </select>
+            <BR>
+            <div id="dd">
+                {% block dd %}
+                {% endblock %}
+            </div>
+            <BR>
+            <input class="btn btn-success" type="submit" value="Enviar">
+        {% else %}
+            <p> No tiene correo asociado, asocie uno.</p>
+        {% endif %}
+    </form>
+    <script>
+        function onmailclick() {
+            var id_mail = document.getElementById("dd_mail").value;
+            $("#dd").load("{{ path('dd') }}", {
+                'id_mail': id_mail,
+                'id_r': {{ pre.id }}
+            });
+        }
+    </script>
+{% endblock %}

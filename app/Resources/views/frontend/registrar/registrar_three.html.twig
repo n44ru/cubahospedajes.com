@@ -1,0 +1,42 @@
+{% extends 'base_frontend.html.twig' %}
+
+{% block body %}
+    <section id="aa-property-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-12">
+                    <div class="aa-property-header-inner">
+                        <h2>{{ 'registrar.titulo' | trans({}, 'base') }}</h2>
+                        <ol class="breadcrumb">
+                            <li></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section id="aa-advance-search">
+        <div class="container margin-top2">
+            <div class="col-md-6">
+                <div class="row" id="text-align">
+                    <h2>{{ 'registrar.paso3' | trans({}, 'base') }}</h2>
+                    <hr>
+                    <form method="post" enctype="multipart/form-data">
+                        <div class="form-group">
+                            <p><strong>{{ 'registrar.drag' | trans({}, 'base') }}</strong></p>
+                            <div id="googleMap_reg" class="mapa_google"></div>
+                            <input type="hidden" name="Lat" value="" id="_lat">
+                            <input type="hidden" name="Long" value="" id="_long">
+                        </div>
+                        <br>
+                        <div class="form-group">
+                            <input class="btn btn-primary" type="submit"
+                                   value=" {{ 'registrar.registrar' | trans({}, 'base') }} ">
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+    <script src="http://maps.googleapis.com/maps/api/js?key=AIzaSyDwCYvrtVnqQp6sLertKNsViUb3AEpBOBA"></script>
+{% endblock %}
