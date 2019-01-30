@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Imagenes" table="Imagenes">
+    <indexes>
+      <index name="FKImagenes803015" columns="Habitacionesid"/>
+      <index name="FKImagenes411793" columns="Casaid"/>
+      <index name="FKImagenes754365" columns="Puntosid"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="id" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="imagen1" type="string" column="imagen1" length="255" nullable="true"/>
+    <field name="imagen2" type="string" column="imagen2" length="255" nullable="true"/>
+    <field name="imagen3" type="string" column="imagen3" length="255" nullable="true"/>
+    <field name="imagen4" type="string" column="imagen4" length="255" nullable="true"/>
+    <field name="imagen5" type="string" column="imagen5" length="255" nullable="true"/>
+    <field name="imagenvr1" type="string" column="imagenvr1" length="255" nullable="true"/>
+    <field name="imagenvr2" type="string" column="imagenvr2" length="255" nullable="true"/>
+    <field name="imagenvr3" type="string" column="imagenvr3" length="255" nullable="true"/>
+    <many-to-one field="habitacionesid" target-entity="Habitaciones">
+      <join-columns>
+        <join-column name="Habitacionesid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="puntosid" target-entity="Puntos">
+      <join-columns>
+        <join-column name="Puntosid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="casaid" target-entity="Casa">
+      <join-columns>
+        <join-column name="Casaid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

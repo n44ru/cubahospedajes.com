@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Casa" table="Casa">
+    <indexes>
+      <index name="FKCasa325272" columns="Subdestinosid"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="id" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="nombre" type="string" column="nombre" length="255" nullable="true"/>
+    <field name="direccion" type="string" column="direccion" length="255" nullable="true"/>
+    <field name="responsable" type="string" column="responsable" length="255" nullable="true"/>
+    <field name="telefono" type="integer" column="telefono" nullable="true"/>
+    <field name="correo" type="string" column="correo" length="255" nullable="true"/>
+    <field name="activa" type="string" column="activa" length="2" nullable="true"/>
+    <field name="texto" type="string" column="texto" length="1000" nullable="true"/>
+    <field name="precio" type="float" column="precio" precision="10" scale="0" nullable="true"/>
+    <field name="cuartos" type="integer" column="cuartos" nullable="true"/>
+    <field name="capacidad" type="integer" column="capacidad" nullable="true"/>
+    <field name="keywords" type="string" column="keywords" length="255" nullable="true"/>
+    <many-to-one field="subdestinosid" target-entity="Subdestinos">
+      <join-columns>
+        <join-column name="Subdestinosid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

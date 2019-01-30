@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\CasaEtiqueta" table="Casa_Etiqueta">
+    <indexes>
+      <index name="FKCasa_Etiqu10414" columns="Casaid"/>
+      <index name="FKCasa_Etiqu730566" columns="Etiquetasid"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="id" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <many-to-one field="etiquetasid" target-entity="Etiquetas">
+      <join-columns>
+        <join-column name="Etiquetasid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+    <many-to-one field="casaid" target-entity="Casa">
+      <join-columns>
+        <join-column name="Casaid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>

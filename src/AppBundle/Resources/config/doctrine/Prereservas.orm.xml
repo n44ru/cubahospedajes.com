@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<doctrine-mapping xmlns="http://doctrine-project.org/schemas/orm/doctrine-mapping" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://doctrine-project.org/schemas/orm/doctrine-mapping http://doctrine-project.org/schemas/orm/doctrine-mapping.xsd">
+  <entity name="AppBundle\Entity\Prereservas" table="Prereservas">
+    <indexes>
+      <index name="FKPrereserva770711" columns="Casaid"/>
+    </indexes>
+    <unique-constraints>
+      <unique-constraint name="id" columns="id"/>
+    </unique-constraints>
+    <id name="id" type="integer" column="id">
+      <generator strategy="IDENTITY"/>
+    </id>
+    <field name="email" type="string" column="email" length="255" nullable="true"/>
+    <field name="nombre" type="string" column="nombre" length="255" nullable="true"/>
+    <field name="pais" type="string" column="pais" length="255" nullable="true"/>
+    <field name="fechallegada" type="string" column="fechallegada" length="255" nullable="true"/>
+    <field name="fechasalida" type="string" column="fechasalida" length="255" nullable="true"/>
+    <field name="horallegada" type="string" column="horallegada" length="255" nullable="true"/>
+    <field name="horasalida" type="string" column="horasalida" length="255" nullable="true"/>
+    <field name="cantpersonas" type="integer" column="cantpersonas" nullable="true"/>
+    <field name="canthab" type="integer" column="canthab" nullable="true"/>
+    <field name="datosvuelo" type="string" column="datosvuelo" length="255" nullable="true"/>
+    <field name="telefono" type="integer" column="telefono" nullable="true"/>
+    <field name="comentario" type="string" column="comentario" length="255" nullable="true"/>
+    <field name="accion" type="string" column="accion" length="255" nullable="true"/>
+    <many-to-one field="casaid" target-entity="Casa">
+      <join-columns>
+        <join-column name="Casaid" referenced-column-name="id"/>
+      </join-columns>
+    </many-to-one>
+  </entity>
+</doctrine-mapping>
