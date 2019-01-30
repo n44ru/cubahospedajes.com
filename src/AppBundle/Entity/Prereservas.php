@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Prereservas
  *
- * @ORM\Table(name="Prereservas", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="FKPrereserva770711", columns={"Casaid"})})
+ * @ORM\Table(name="prereservas", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Prereservas
@@ -15,16 +15,16 @@ class Prereservas
     /**
      * @var string
      *
-     * @ORM\Column(name="email", type="string", length=255, nullable=true)
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
      */
-    private $email;
+    private $nombre;
 
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
+     * @ORM\Column(name="email", type="string", length=255, nullable=true)
      */
-    private $nombre;
+    private $email;
 
     /**
      * @var string
@@ -97,11 +97,14 @@ class Prereservas
     private $comentario;
 
     /**
-     * @var string
+     * @var \AppBundle\Entity\Estados
      *
-     * @ORM\Column(name="accion", type="string", length=255, nullable=true)
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Estados")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Estadosid", referencedColumnName="id", onDelete="CASCADE")
+     * })
      */
-    private $accion;
+    private $estadosid;
 
     /**
      * @var integer
@@ -117,35 +120,12 @@ class Prereservas
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Casa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Casaid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Casaid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $casaid;
 
 
-
-    /**
-     * Set email
-     *
-     * @param string $email
-     * @return Prereservas
-     */
-    public function setEmail($email)
-    {
-        $this->email = $email;
-
-        return $this;
-    }
-
-    /**
-     * Get email
-     *
-     * @return string 
-     */
-    public function getEmail()
-    {
-        return $this->email;
-    }
 
     /**
      * Set nombre
@@ -168,6 +148,29 @@ class Prereservas
     public function getNombre()
     {
         return $this->nombre;
+    }
+
+    /**
+     * Set email
+     *
+     * @param string $email
+     * @return Prereservas
+     */
+    public function setEmail($email)
+    {
+        $this->email = $email;
+
+        return $this;
+    }
+
+    /**
+     * Get email
+     *
+     * @return string 
+     */
+    public function getEmail()
+    {
+        return $this->email;
     }
 
     /**
@@ -401,32 +404,9 @@ class Prereservas
     }
 
     /**
-     * Set accion
-     *
-     * @param string $accion
-     * @return Prereservas
-     */
-    public function setAccion($accion)
-    {
-        $this->accion = $accion;
-
-        return $this;
-    }
-
-    /**
-     * Get accion
-     *
-     * @return string 
-     */
-    public function getAccion()
-    {
-        return $this->accion;
-    }
-
-    /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -454,5 +434,28 @@ class Prereservas
     public function getCasaid()
     {
         return $this->casaid;
+    }
+
+    /**
+     * Set estadosid
+     *
+     * @param \AppBundle\Entity\Estados $estadosid
+     * @return Prereservas
+     */
+    public function setEstadosid(\AppBundle\Entity\Estados $estadosid = null)
+    {
+        $this->estadosid = $estadosid;
+
+        return $this;
+    }
+
+    /**
+     * Get estadosid
+     *
+     * @return \AppBundle\Entity\Estados
+     */
+    public function getEstadosid()
+    {
+        return $this->estadosid;
     }
 }

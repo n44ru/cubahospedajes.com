@@ -26,16 +26,13 @@ class GalleryController extends Controller
             if($request->request->get('tag'))
             {
                 $tag = $request->request->get('tag');
-                /* Obtener el ultimo id para las imagenes.
-                $last_id = $em->createQuery('SELECT MAX(p.id) FROM AppBundle:Imagegallery p ');
-                if ($last_id == null || $last_id < 1)
-                    $last_id = 1; */
+                $option = $request->request->get('option');
 
                 $id_casa = $request->request->get('select_casas');
                 $id_punto = $request->request->get('select_puntos');
                 //
                 $img = new Imagegallery();
-                if ($id_casa != null) {
+                if($option=='casas'){
                     $casa_object = $em->getRepository('AppBundle:Casa')->find($id_casa);
                     $img->setCasaid($casa_object);
                     $img->setPuntosid(null);

@@ -62,11 +62,14 @@ class ImagenController extends Controller
                     $img->setImagen4($images[3]);
                 if($images[4]!=null)
                     $img->setImagen5($images[4]);
+                if($images[0]== 'images/uploads/'.$nombre.'/')
+                    $img->setImagen1('images/noimage/no.png');
 
-                // Lo mismo pero para imagenes VR.
-                if (!file_exists(UPLOADPATH . $nombre.'/VR')) {
-                    mkdir(UPLOADPATH . $nombre.'/VR');
+                //Fix por si no suben.
+                if($images[0]== 'images/uploads/'.$nombre.'/'){
+                    $img->setImagen1('images/noimage/no.png');
                 }
+                //
                 $imagesvr = array('','','');
                 if($_FILES['myfilesvr'] != null) {
                     for ($i = 0; $i < count($_FILES['myfilesvr']['name']); $i++) {
@@ -80,6 +83,10 @@ class ImagenController extends Controller
                     $img->setImagenvr2($imagesvr[1]);
                 if($imagesvr[2]!=null)
                     $img->setImagenvr3($imagesvr[2]);
+
+                //Fix por si no suben VR
+                if($imagesvr[0]== 'images/uploads/'.$nombre.'/VR/')
+                    $img->setImagenvr1('images/noimage/no.png');
                 //
                 $em->persist($img);
                 $em->flush();

@@ -34,11 +34,36 @@ class PuntosController extends Controller
                 $nombre = $request->request->get('nombre');
                 $direccion = $request->request->get('direccion');
                 $texto = $request->request->get('texto');
+                $portada = $request->request->get('portada');
+                $metatitle = $request->request->get('metatitle');
+                $metadesc = $request->request->get('metadesc');
+                $metakeyword = $request->request->get('metakeyword');
+                // Recoger el tag de las imagenes.
+                $tags = $request->request->get('tags');
+                //Si las meta estan vacias autogenerarlas.
+                if($metatitle==null)
+                {
+                    $metatitle=$nombre;
+                }
+                if($metadesc==null)
+                {
+                    $metadesc=$nombre;
+                }
+                if($metakeyword==null)
+                {
+                    // Ver que keywords incluir aqui.
+                    $destino=$s->getDestinoid();
+                    $metakeyword=$s->getNombre().','.$destino->getNombre();
+                }
                 //
                 $puntos = new Puntos();
                 $puntos->setNombre($nombre);
                 $puntos->setDireccion($direccion);
                 $puntos->setTexto($texto);
+                $puntos->setMetatitle($metatitle);
+                $puntos->setMetadesc($metadesc);
+                $puntos->setMetakeyword($metakeyword);
+                $puntos->setPortada($portada);
                 // Insertando relaciones
                 if($request->request->get('subdestino'))
                 {
@@ -48,58 +73,34 @@ class PuntosController extends Controller
                 //
                 $em->persist($puntos);
                 $em->flush();
-                //
                 // Controlar las imagenes subidas
-                //Imagenes
-                $img = new Imagenes();
-                // nombre de la casa.
+                // nombre del punto.
                 $nombre= $puntos->getNombre();
                 define('UPLOADPATH', 'images/uploads/');
                 if (!file_exists(UPLOADPATH . $nombre)) {
                     mkdir(UPLOADPATH . $nombre);
                 }
                 // Recoger todas las imagenes del post.
-                $images = array('','','','','');
-                if($_FILES['myfiles'] != null) {
+                if (strlen($_FILES['myfiles']['name'][0]) > 0) {
                     for ($i = 0; $i < count($_FILES['myfiles']['name']); $i++) {
-                        $images[$i] = UPLOADPATH.$nombre.'/'.$_FILES['myfiles']['name'][$i];
-                        move_uploaded_file($_FILES['myfiles']['tmp_name'][$i], UPLOADPATH . $nombre.'/'.$_FILES['myfiles']['name'][$i]);
+                        $img = new Imagenes();
+                        move_uploaded_file($_FILES['myfiles']['tmp_name'][$i], UPLOADPATH . $nombre . '/' . $_FILES['myfiles']['name'][$i]);
+                        //Insertando una nueva Imagen.
+                        $img->setImagen(UPLOADPATH . $nombre . '/' . $_FILES['myfiles']['name'][$i]);
+                        $img->setTags($tags);
+                        $img->setPuntosid($puntos);
+                        $em->persist($img);
+                        $em->flush();
                     }
                 }
-                if($images[0]!=null)
-                    $img->setImagen1($images[0]);
-                if($images[1]!=null)
-                    $img->setImagen2($images[1]);
-                if($images[2]!=null)
-                    $img->setImagen3($images[2]);
-                if($images[3]!=null)
-                    $img->setImagen4($images[3]);
-                if($images[4]!=null)
-                    $img->setImagen5($images[4]);
-
-                // Lo mismo pero para imagenes VR.
-                if (!file_exists(UPLOADPATH . $nombre.'/VR')) {
-                    mkdir(UPLOADPATH . $nombre.'/VR');
+                else{
+                    $img = new Imagenes();
+                    $img->setImagen('images/noimage/no.png');
+                    $img->setTags($tags);
+                    $img->setPuntosid($puntos);
+                    $em->persist($img);
+                    $em->flush();
                 }
-                $imagesvr = array('','','');
-                if($_FILES['myfilesvr'] != null) {
-                    for ($i = 0; $i < count($_FILES['myfilesvr']['name']); $i++) {
-                        $imagesvr[$i] = UPLOADPATH.$nombre.'/VR/'.$_FILES['myfilesvr']['name'][$i];
-                        move_uploaded_file($_FILES['myfilesvr']['tmp_name'][$i], UPLOADPATH . $nombre.'/VR/'.$_FILES['myfilesvr']['name'][$i]);
-                    }
-                }
-                if($imagesvr[0]!=null)
-                    $img->setImagenvr1($imagesvr[0]);
-                if($imagesvr[1]!=null)
-                    $img->setImagenvr2($imagesvr[1]);
-                if($imagesvr[2]!=null)
-                    $img->setImagenvr3($imagesvr[2]);
-                //
-                $img->setPuntosid($puntos);
-                $em->persist($img);
-                $em->flush();
-                //
-                return $this->redirectToRoute('puntos_ver');
             }
             if($request->request->get('nombre_editar'))
             {
@@ -115,10 +116,35 @@ class PuntosController extends Controller
                 $nombre = $request->request->get('nombre_editar');
                 $direccion = $request->request->get('direccion');
                 $texto = $request->request->get('texto');
+                $portada = $request->request->get('portada');
+                $metatitle = $request->request->get('metatitle');
+                $metadesc = $request->request->get('metadesc');
+                $metakeyword = $request->request->get('metakeyword');
+                // Recoger el tag de las imagenes.
+                $tags = $request->request->get('tags');
+                //Si las meta estan vacias autogenerarlas.
+                if($metatitle==null)
+                {
+                    $metatitle=$nombre;
+                }
+                if($metadesc==null)
+                {
+                    $metadesc=$texto;
+                }
+                if($metakeyword==null)
+                {
+                    // Ver que keywords incluir aqui.
+                    $destino=$s->getDestinoid();
+                    $metakeyword=$s->getNombre().','.$destino->getNombre();
+                }
                 //
                 $puntos->setNombre($nombre);
                 $puntos->setDireccion($direccion);
                 $puntos->setTexto($texto);
+                $puntos->setPortada($portada);
+                $puntos->setMetatitle($metatitle);
+                $puntos->setMetadesc($metadesc);
+                $puntos->setMetakeyword($metakeyword);
                 // Insertando relaciones
                 if($request->request->get('subdestino'))
                 {
@@ -129,65 +155,45 @@ class PuntosController extends Controller
                 $em->persist($puntos);
                 $em->flush();
                 //
-                // Controlar las imagenes subidas
-                //Imagenes
-                $query = $em->createQuery('SELECT p FROM AppBundle:Imagenes p WHERE p.puntosid = ?1 ');
-                $query->setParameter(1, $id);
-                $img_temp = $query->getResult();
-                $img= $em->getRepository('AppBundle:Imagenes')->find($img_temp[0]->getId());
-                // nombre del punto.
                 $nombre= $puntos->getNombre();
                 define('UPLOADPATH', 'images/uploads/');
                 if (!file_exists(UPLOADPATH . $nombre)) {
                     mkdir(UPLOADPATH . $nombre);
                 }
+                $query = $em->createQuery('SELECT p FROM AppBundle:Imagenes p WHERE p.puntosid = ?1 ');
+                $query->setParameter(1, $id);
+                $img_temp = $query->getResult();
                 // Recoger todas las imagenes del post.
-                $images = array('','','','','');
-                if($_FILES['myfiles'] != null) {
+                if (strlen($_FILES['myfiles']['name'][0]) > 0) {
+                    //Si es una image none borrarla.
+                    if($img_temp[0]->getImagen() == 'images/noimage/no.png')
+                    {
+                        $delete = $em->getRepository('AppBundle:Imagenes')->find($img_temp[0]->getId());
+                        $em->remove($delete);
+                        $em->flush();
+                    }
                     for ($i = 0; $i < count($_FILES['myfiles']['name']); $i++) {
-                        if($_FILES['myfiles']['name'][$i]!= null) { // Fix para imagenes vacias.
-                            $images[$i] = UPLOADPATH . $nombre . '/' . $_FILES['myfiles']['name'][$i];
-                            move_uploaded_file($_FILES['myfiles']['tmp_name'][$i], UPLOADPATH . $nombre . '/' . $_FILES['myfiles']['name'][$i]);
-                        }
+                        $img = new Imagenes();
+                        move_uploaded_file($_FILES['myfiles']['tmp_name'][$i], UPLOADPATH . $nombre . '/' . $_FILES['myfiles']['name'][$i]);
+                        //Insertando una nueva Imagen.
+                        $img->setImagen(UPLOADPATH . $nombre . '/' . $_FILES['myfiles']['name'][$i]);
+                        $img->setTags($tags);
+                        $img->setPuntosid($puntos);
+                        $em->persist($img);
+                        $em->flush();
                     }
                 }
-                if($images[0]!=null)
-                    $img->setImagen1($images[0]);
-                if($images[1]!=null)
-                    $img->setImagen2($images[1]);
-                if($images[2]!=null)
-                    $img->setImagen3($images[2]);
-                if($images[3]!=null)
-                    $img->setImagen4($images[3]);
-                if($images[4]!=null)
-                    $img->setImagen5($images[4]);
-
-                // Lo mismo pero para imagenes VR.
-                if (!file_exists(UPLOADPATH . $nombre.'/VR')) {
-                    mkdir(UPLOADPATH . $nombre.'/VR');
+                elseif (count($img_temp)==0)
+                {
+                    $img = new Imagenes();
+                    $img->setImagen('images/noimage/no.png');
+                    $img->setTags($tags);
+                    $img->setPuntosid($puntos);
+                    $em->persist($img);
+                    $em->flush();
                 }
-                $imagesvr = array('','','');
-                if($_FILES['myfilesvr'] != null) {
-                    for ($i = 0; $i < count($_FILES['myfilesvr']['name']); $i++) {
-                        if($_FILES['myfilesvr']['name'][$i]!= null) { // Fix para imagenes vacias.
-                            $imagesvr[$i] = UPLOADPATH . $nombre . '/VR/' . $_FILES['myfilesvr']['name'][$i];
-                            move_uploaded_file($_FILES['myfilesvr']['tmp_name'][$i], UPLOADPATH . $nombre . '/VR/' . $_FILES['myfilesvr']['name'][$i]);
-                        }
-                    }
-                }
-                if($imagesvr[0]!=null)
-                    $img->setImagenvr1($imagesvr[0]);
-                if($imagesvr[1]!=null)
-                    $img->setImagenvr2($imagesvr[1]);
-                if($imagesvr[2]!=null)
-                    $img->setImagenvr3($imagesvr[2]);
-                //
-                //$img->setCasaid($casa);
-                $em->persist($img);
-                $em->flush();
-                //
-                return $this->redirectToRoute('puntos_ver');
             }
+            return $this->redirectToRoute('puntos_ver');
         }
         return $this->render('backend/puntos/ver.html.twig', array('puntos' => $puntos, 'imagenes'=>$imagenes, 'destinos'=>$destinos, 'subdestinos'=>$subdestinos));
     }

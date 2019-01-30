@@ -15,6 +15,9 @@ class SubdestinosController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        // Cargar los settings
+        $config = $em->getRepository('AppBundle:Settings')->find(1);
+        //
         $destinos = $em->getRepository('AppBundle:Destinos')->findAll();
         $subdestinos = $em->getRepository('AppBundle:Subdestinos')->findAll();
 
@@ -22,11 +25,17 @@ class SubdestinosController extends Controller
         if ($request->request->count() >= 1) {
             if ($request->request->get('nombre')) {
                 $nombre = $request->request->get('nombre');
+                $email = $request->request->get('email');
+                if($email == null)
+                {
+                    $email = $config->getEmailglobal();
+                }
                 $destino_id = $request->request->get('select_destinos');
                 $destinos = $em->getRepository('AppBundle:Destinos')->find($destino_id);
                 $dest = new Subdestinos();
                 $dest->setNombre($nombre);
                 $dest->setDestinoid($destinos);
+                $dest->setEmail($email);
                 //
                 $em->persist($dest);
                 $em->flush();
@@ -36,6 +45,11 @@ class SubdestinosController extends Controller
             if ($request->request->get('nombre_editar')) {
                 //
                 $nombre = $request->request->get('nombre_editar');
+                $email = $request->request->get('email');
+                if($email == null)
+                {
+                    $email = $config->getEmailglobal();
+                }
                 // id del subdestino, se coge del input hidden
                 $id = $request->request->get('id');
                 $dest = $em->getRepository('AppBundle:Subdestinos')->find($id);
@@ -45,6 +59,7 @@ class SubdestinosController extends Controller
                 //
                 $dest->setNombre($nombre);
                 $dest->setDestinoid($destinos);
+                $dest->setEmail($email);
                 //
                 $em->persist($dest);
                 $em->flush();

@@ -5,26 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Coordenadas
+ * Recomendados
  *
- * @ORM\Table(name="coordenadas", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\Table(name="recomendados", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class Coordenadas
+class Recomendados
 {
     /**
-     * @var string
+     * @var integer
      *
-     * @ORM\Column(name="latitud", type="string", length=255, nullable=true)
+     * @ORM\Column(name="peso", type="integer", nullable=true)
      */
-    private $latitud;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="longitud", type="string", length=255, nullable=true)
-     */
-    private $longitud;
+    private $peso;
 
     /**
      * @var integer
@@ -58,49 +51,26 @@ class Coordenadas
 
 
     /**
-     * Set latitud
+     * Set peso
      *
-     * @param string $latitud
-     * @return Coordenadas
+     * @param integer $peso
+     * @return Recomendados
      */
-    public function setLatitud($latitud)
+    public function setPeso($peso)
     {
-        $this->latitud = $latitud;
+        $this->peso = $peso;
 
         return $this;
     }
 
     /**
-     * Get latitud
+     * Get peso
      *
-     * @return string 
+     * @return integer 
      */
-    public function getLatitud()
+    public function getPeso()
     {
-        return $this->latitud;
-    }
-
-    /**
-     * Set longitud
-     *
-     * @param string $longitud
-     * @return Coordenadas
-     */
-    public function setLongitud($longitud)
-    {
-        $this->longitud = $longitud;
-
-        return $this;
-    }
-
-    /**
-     * Get longitud
-     *
-     * @return string 
-     */
-    public function getLongitud()
-    {
-        return $this->longitud;
+        return $this->peso;
     }
 
     /**
@@ -117,7 +87,7 @@ class Coordenadas
      * Set casaid
      *
      * @param \AppBundle\Entity\Casa $casaid
-     * @return Coordenadas
+     * @return Recomendados
      */
     public function setCasaid(\AppBundle\Entity\Casa $casaid = null)
     {
@@ -140,7 +110,7 @@ class Coordenadas
      * Set puntosid
      *
      * @param \AppBundle\Entity\Puntos $puntosid
-     * @return Coordenadas
+     * @return Recomendados
      */
     public function setPuntosid(\AppBundle\Entity\Puntos $puntosid = null)
     {

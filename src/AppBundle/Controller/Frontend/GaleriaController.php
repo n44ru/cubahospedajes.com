@@ -10,23 +10,24 @@ use AppBundle\Entity\Gallery;
 class GaleriaController extends Controller
 {
     /**
-     * @Route("/galeria", name="gallery_front")
+     * @Route("/gallery/{_locale}", name="gallery_front")
+     * defaults={"_locale"="es"},
+     * requirements={"_locale"="(es|en)"}
      */
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
-        $gall = $em->getRepository('AppBundle:Imagegallery')->findAll();
+        $query = $em->createQuery('SELECT DISTINCT p.tags FROM AppBundle:Imagegallery p');
+        $array_tag = $query->getResult();
         $full = $em->getRepository('AppBundle:Gallery')->findAll();
-        // Enviar todas las etiquetas sin repetir.
-        $array_tag = array();
-        for ($i=0;$i<count($gall);$i++)
-        {
-            $temp= $gall[$i]->getTags();
-            if(!array_search($temp, $array_tag))
-            {
-                $array_tag[$i]= array('tags'=>$temp);
-            }
-        }
-        return $this->render('frontend/galeria/galeria.html.twig', array('gallery'=>$full, 'tags'=>$array_tag));
+        $this->meta_tag_global();
+        return $this->render('frontend/galeria/galeria.html.twig', array('gallery' => $full, 'tags' => $array_tag));
+    }
+    public function meta_tag_global(){
+        $em = $this->getDoctrine()->getManager();
+        $config = $em->getRepository('AppBundle:Settings')->find(1);
+        $this->get('twig')->addGlobal('global_title', $config->getWebtitulo());
+        $this->get('twig')->addGlobal('global_description', $config->getWebdesc());
+        $this->get('twig')->addGlobal('global_keywords', $config->getWebkeywords());
     }
 }

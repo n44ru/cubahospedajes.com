@@ -21,42 +21,46 @@ class CoordenadasController extends Controller
         $casas = $em->getRepository('AppBundle:Casa')->findAll();
         $puntos = $em->getRepository('AppBundle:Puntos')->findAll();
         if ($request->request->count() >= 1) {
-            if($request->request->get('coordenadas'))
+            if($request->request->get('latitud'))
             {
                 $id_casa = $request->request->get('select_casas');
                 $id_punto = $request->request->get('select_puntos');
-                $coordenadas = $request->request->get('coordenadas');
+                $option = $request->request->get('option');
+                $lat = $request->request->get('latitud');
+                $long = $request->request->get('longitud');
                 //
                 $coord = new Coordenadas();
-                if($id_casa!=null)
+                if($option=='casas')
                 {
                     $casa_object = $em->getRepository('AppBundle:Casa')->find($id_casa);
-                    $nombre=$casa_object->getNombre();
                     $coord->setCasaid($casa_object);
                     $coord->setPuntosid(null);
                 }
                 else {
                     $punto_object = $em->getRepository('AppBundle:Puntos')->find($id_punto);
-                    $nombre=$punto_object->getNombre();
                     $coord->setCasaid(null);
                     $coord->setPuntosid($punto_object);
                 }
-                $coord->setCoordenadas($coordenadas);
+                $coord->setLatitud($lat);
+                $coord->setLongitud($long);
                 $em->persist($coord);
                 $em->flush();
                 //
                 return $this->redirectToRoute('coord_ver');
             }
-            if($request->request->get('coordenadas_editar'))
+            if($request->request->get('latitud_editar'))
             {
                 /*$id_casa = $request->request->get('select_casas');
                 $id_punto = $request->request->get('select_puntos');*/
                 //
-                $coordenadas = $request->request->get('coordenadas_editar');
+                $lat = $request->request->get('latitud_editar');
+                $long = $request->request->get('longitud');
                 $id = $request->request->get('id');
                 $coord = $em->getRepository('AppBundle:Coordenadas')->find($id);
                 //
-                $coord->setCoordenadas($coordenadas);
+
+                $coord->setLatitud($lat);
+                $coord->setLongitud($long);
                 $em->persist($coord);
                 $em->flush();
                 //

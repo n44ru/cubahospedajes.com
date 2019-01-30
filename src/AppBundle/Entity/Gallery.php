@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Gallery
  *
- * @ORM\Table(name="Gallery", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="FKGallery975612", columns={"Imagegalleryid"})})
+ * @ORM\Table(name="gallery", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Gallery
@@ -26,7 +26,7 @@ class Gallery
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Imagegallery")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Imagegalleryid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Imagegalleryid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $imagegalleryid;

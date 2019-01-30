@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Casa
  *
- * @ORM\Table(name="Casa", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="FKCasa325272", columns={"Subdestinosid"})})
+ * @ORM\Table(name="casa", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Casa
@@ -36,7 +36,7 @@ class Casa
     /**
      * @var integer
      *
-     * @ORM\Column(name="telefono", type="integer", nullable=true)
+     * @ORM\Column(name="telefono", type="string", length=255, nullable=true)
      */
     private $telefono;
 
@@ -83,11 +83,67 @@ class Casa
     private $capacidad;
 
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="bath", type="integer", nullable=true)
+     */
+    private $bath;
+
+    /**
      * @var string
      *
      * @ORM\Column(name="keywords", type="string", length=255, nullable=true)
      */
     private $keywords;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metatitle", type="string", length=255, nullable=true)
+     */
+    private $metatitle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metadesc", type="string", length=255, nullable=true)
+     */
+    private $metadesc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metakeyword", type="string", length=255, nullable=true)
+     */
+    private $metakeyword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reservamultiple", type="string", length=2, nullable=true)
+     */
+    private $reservamultiple;
+
+    /**
+     * @var float
+     *
+     * @ORM\Column(name="preciooferta", type="float", precision=10, scale=0, nullable=true)
+     */
+    private $preciooferta;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="reglas", type="string", length=2000, nullable=true)
+     */
+    private $reglas;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     */
+    private $url;
 
     /**
      * @var integer
@@ -103,7 +159,7 @@ class Casa
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Subdestinos")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Subdestinosid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Subdestinosid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $subdestinosid;
@@ -341,6 +397,29 @@ class Casa
     }
 
     /**
+     * Set bath
+     *
+     * @param integer $bath
+     * @return Casa
+     */
+    public function setBath($bath)
+    {
+        $this->bath = $bath;
+
+        return $this;
+    }
+
+    /**
+     * Get bath
+     *
+     * @return integer 
+     */
+    public function getBath()
+    {
+        return $this->bath;
+    }
+
+    /**
      * Set keywords
      *
      * @param string $keywords
@@ -361,6 +440,167 @@ class Casa
     public function getKeywords()
     {
         return $this->keywords;
+    }
+
+    /**
+     * Set metatitle
+     *
+     * @param string $metatitle
+     * @return Casa
+     */
+    public function setMetatitle($metatitle)
+    {
+        $this->metatitle = $metatitle;
+
+        return $this;
+    }
+
+    /**
+     * Get metatitle
+     *
+     * @return string 
+     */
+    public function getMetatitle()
+    {
+        return $this->metatitle;
+    }
+
+    /**
+     * Set metadesc
+     *
+     * @param string $metadesc
+     * @return Casa
+     */
+    public function setMetadesc($metadesc)
+    {
+        $this->metadesc = $metadesc;
+
+        return $this;
+    }
+
+    /**
+     * Get metadesc
+     *
+     * @return string 
+     */
+    public function getMetadesc()
+    {
+        return $this->metadesc;
+    }
+
+    /**
+     * Set metakeyword
+     *
+     * @param string $metakeyword
+     * @return Casa
+     */
+    public function setMetakeyword($metakeyword)
+    {
+        $this->metakeyword = $metakeyword;
+
+        return $this;
+    }
+
+    /**
+     * Get metakeyword
+     *
+     * @return string 
+     */
+    public function getMetakeyword()
+    {
+        return $this->metakeyword;
+    }
+
+    /**
+     * Set reservamultiple
+     *
+     * @param string $reservamultiple
+     * @return Casa
+     */
+    public function setReservamultiple($reservamultiple)
+    {
+        $this->reservamultiple = $reservamultiple;
+
+        return $this;
+    }
+
+    /**
+     * Get reservamultiple
+     *
+     * @return string 
+     */
+    public function getReservamultiple()
+    {
+        return $this->reservamultiple;
+    }
+
+    /**
+     * Set preciooferta
+     *
+     * @param float $preciooferta
+     * @return Casa
+     */
+    public function setPreciooferta($preciooferta)
+    {
+        $this->preciooferta = $preciooferta;
+
+        return $this;
+    }
+
+    /**
+     * Get preciooferta
+     *
+     * @return float 
+     */
+    public function getPreciooferta()
+    {
+        return $this->preciooferta;
+    }
+
+    /**
+     * Set reglas
+     *
+     * @param string $reglas
+     * @return Casa
+     */
+    public function setReglas($reglas)
+    {
+        $this->reglas = $reglas;
+
+        return $this;
+    }
+
+    /**
+     * Get reglas
+     *
+     * @return string 
+     */
+    public function getReglas()
+    {
+        return $this->reglas;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Casa
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**

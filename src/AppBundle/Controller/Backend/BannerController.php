@@ -15,21 +15,23 @@ class BannerController extends Controller
     public function indexAction(Request $request)
     {
         $em = $this->getDoctrine()->getManager();
+        //
         $puntos = $em->getRepository('AppBundle:Banner')->findAll();
         if ($request->request->count() > 1) {
-            if($request->request->get('titulo'))
-            {
+            if ($request->request->get('titulo')) {
                 $titulo = $request->request->get('titulo');
                 $desc = $request->request->get('descripcion');
                 $direccion = $request->request->get('direccion');
                 $precio = $request->request->get('precio');
                 $texto = $request->request->get('texto');
+                $url = $request->request->get('url');
                 //
                 define('UPLOADPATH', 'images/banner/');
                 if (!file_exists(UPLOADPATH . $titulo)) {
-                    mkdir(UPLOADPATH . $titulo);}
+                    mkdir(UPLOADPATH . $titulo);
+                }
                 $file1 = $_FILES['f1']['name'];
-                $target1 = UPLOADPATH . '/'.$titulo. '/' . $file1;
+                $target1 = UPLOADPATH . $titulo . '/' . $file1;
                 move_uploaded_file($_FILES['f1']['tmp_name'], $target1);
                 //
                 $banner = new Banner();
@@ -38,15 +40,15 @@ class BannerController extends Controller
                 $banner->setDireccion($direccion);
                 $banner->setPrecio($precio);
                 $banner->setTexto($texto);
-                if($file1!=null) {
+                $banner->setUrl($url);
+                if ($file1 != null) {
                     $banner->setImagen($target1);
                 }
                 //
                 $em->persist($banner);
                 $em->flush();
             }
-            if($request->request->get('titulo_editar'))
-            {
+            if ($request->request->get('titulo_editar')) {
                 $id = $request->request->get('id');
                 $banner = $em->getRepository('AppBundle:Banner')->find($id);
                 $titulo = $request->request->get('titulo_editar');
@@ -54,12 +56,14 @@ class BannerController extends Controller
                 $direccion = $request->request->get('direccion');
                 $precio = $request->request->get('precio');
                 $texto = $request->request->get('texto');
+                $url = $request->request->get('url');
                 //
-                define('UPLOADPATH', 'images/banner/');
+                define('UPLOADPATH', 'images/banner');
                 if (!file_exists(UPLOADPATH . $titulo)) {
-                    mkdir(UPLOADPATH . $titulo);}
+                    mkdir(UPLOADPATH . $titulo);
+                }
                 $file1 = $_FILES['f1']['name'];
-                $target1 = UPLOADPATH . '/'.$titulo. '/' . $file1;
+                $target1 = UPLOADPATH . '/' . $titulo . '/' . $file1;
                 move_uploaded_file($_FILES['f1']['tmp_name'], $target1);
                 //
                 $banner->setTitulo($titulo);
@@ -67,7 +71,8 @@ class BannerController extends Controller
                 $banner->setDireccion($direccion);
                 $banner->setPrecio($precio);
                 $banner->setTexto($texto);
-                if($file1!=null) {
+                $banner->setUrl($url);
+                if ($file1 != null) {
                     $banner->setImagen($target1);
                 }
                 //
@@ -79,15 +84,16 @@ class BannerController extends Controller
         }
         return $this->render('backend/banner/ver.html.twig', array('puntos' => $puntos));
     }
-    /**
-     * @Route("/admin/banner/eliminar/{id}", name="banner_eliminar")
-     */
-    public function EliminarAction($id)
-    {
-        $em = $this->getDoctrine()->getManager();
-        $banner = $em->getRepository('AppBundle:Banner')->find($id);
-        $em->remove($banner);
-        $em->flush();
-        return $this->redirectToRoute('banner_ver');
-    }
+
+        /**
+         * @Route("/admin/banner/eliminar/{id}", name="banner_eliminar")
+         */
+        public function EliminarAction($id)
+        {
+            $em = $this->getDoctrine()->getManager();
+            $banner = $em->getRepository('AppBundle:Banner')->find($id);
+            $em->remove($banner);
+            $em->flush();
+            return $this->redirectToRoute('banner_ver');
+        }
 }

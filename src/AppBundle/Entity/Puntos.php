@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Puntos
  *
- * @ORM\Table(name="Puntos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="FKPuntos960715", columns={"Subdestinosid"})})
+ * @ORM\Table(name="puntos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Puntos
@@ -29,9 +29,37 @@ class Puntos
     /**
      * @var string
      *
-     * @ORM\Column(name="texto", type="string", length=255, nullable=true)
+     * @ORM\Column(name="texto", type="string", length=2000, nullable=true)
      */
     private $texto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metatitle", type="string", length=255, nullable=true)
+     */
+    private $metatitle;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metadesc", type="string", length=255, nullable=true)
+     */
+    private $metadesc;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="metakeyword", type="string", length=255, nullable=true)
+     */
+    private $metakeyword;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="portada", type="string", length=2, nullable=false)
+     */
+    private $portada;
 
     /**
      * @var integer
@@ -121,6 +149,98 @@ class Puntos
     public function getTexto()
     {
         return $this->texto;
+    }
+
+    /**
+     * Set metatitle
+     *
+     * @param string $metatitle
+     * @return Puntos
+     */
+    public function setMetatitle($metatitle)
+    {
+        $this->metatitle = $metatitle;
+
+        return $this;
+    }
+
+    /**
+     * Get metatitle
+     *
+     * @return string 
+     */
+    public function getMetatitle()
+    {
+        return $this->metatitle;
+    }
+
+    /**
+     * Set metadesc
+     *
+     * @param string $metadesc
+     * @return Puntos
+     */
+    public function setMetadesc($metadesc)
+    {
+        $this->metadesc = $metadesc;
+
+        return $this;
+    }
+
+    /**
+     * Get metadesc
+     *
+     * @return string 
+     */
+    public function getMetadesc()
+    {
+        return $this->metadesc;
+    }
+
+    /**
+     * Set metakeyword
+     *
+     * @param string $metakeyword
+     * @return Puntos
+     */
+    public function setMetakeyword($metakeyword)
+    {
+        $this->metakeyword = $metakeyword;
+
+        return $this;
+    }
+
+    /**
+     * Get metakeyword
+     *
+     * @return string 
+     */
+    public function getMetakeyword()
+    {
+        return $this->metakeyword;
+    }
+
+    /**
+     * Set portada
+     *
+     * @param string $portada
+     * @return Puntos
+     */
+    public function setPortada($portada)
+    {
+        $this->portada = $portada;
+
+        return $this;
+    }
+
+    /**
+     * Get portada
+     *
+     * @return string 
+     */
+    public function getPortada()
+    {
+        return $this->portada;
     }
 
     /**

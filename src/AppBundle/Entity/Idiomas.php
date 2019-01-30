@@ -5,19 +5,19 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Destinos
+ * Idiomas
  *
- * @ORM\Table(name="destinos", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\Table(name="Idiomas", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class Destinos
+class Idiomas
 {
     /**
      * @var string
      *
-     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
+     * @ORM\Column(name="idioma", type="string", length=255, nullable=false)
      */
-    private $nombre;
+    private $idioma;
 
     /**
      * @var integer
@@ -31,26 +31,26 @@ class Destinos
 
 
     /**
-     * Set nombre
+     * Set idioma
      *
-     * @param string $nombre
-     * @return Destinos
+     * @param string $idioma
+     * @return Idiomas
      */
-    public function setNombre($nombre)
+    public function setIdioma($idioma)
     {
-        $this->nombre = $nombre;
+        $this->idioma = $idioma;
 
         return $this;
     }
 
     /**
-     * Get nombre
+     * Get idioma
      *
      * @return string 
      */
-    public function getNombre()
+    public function getIdioma()
     {
-        return $this->nombre;
+        return $this->idioma;
     }
 
     /**

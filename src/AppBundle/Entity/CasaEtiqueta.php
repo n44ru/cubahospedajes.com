@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * CasaEtiqueta
  *
- * @ORM\Table(name="Casa_Etiqueta", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="FKCasa_Etiqu10414", columns={"Casaid"}), @ORM\Index(name="FKCasa_Etiqu730566", columns={"Etiquetasid"})})
+ * @ORM\Table(name="casa_etiqueta", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class CasaEtiqueta
@@ -26,7 +26,7 @@ class CasaEtiqueta
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Etiquetas")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Etiquetasid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Etiquetasid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $etiquetasid;
@@ -36,7 +36,7 @@ class CasaEtiqueta
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Casa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Casaid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Casaid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $casaid;

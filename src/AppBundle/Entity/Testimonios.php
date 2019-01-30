@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Evaluaciones
+ * Testimonios
  *
- * @ORM\Table(name="evaluaciones", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\Table(name="testimonios", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
-class Evaluaciones
+class Testimonios
 {
     /**
      * @var integer
@@ -22,7 +22,7 @@ class Evaluaciones
     /**
      * @var string
      *
-     * @ORM\Column(name="comentario", type="string", length=255, nullable=true)
+     * @ORM\Column(name="comentario", type="string", length=1000, nullable=true)
      */
     private $comentario;
 
@@ -32,6 +32,20 @@ class Evaluaciones
      * @ORM\Column(name="activo", type="string", length=2, nullable=false)
      */
     private $activo;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="nombre", type="string", length=255, nullable=true)
+     */
+    private $nombre;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="fecha", type="string", length=255, nullable=true)
+     */
+    private $fecha;
 
     /**
      * @var integer
@@ -52,13 +66,23 @@ class Evaluaciones
      */
     private $casaid;
 
+    /**
+     * @var \AppBundle\Entity\Puntos
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Puntos")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="Puntosid", referencedColumnName="id", onDelete="CASCADE")
+     * })
+     */
+    private $puntosid;
+
 
 
     /**
      * Set rating
      *
      * @param integer $rating
-     * @return Evaluaciones
+     * @return Testimonios
      */
     public function setRating($rating)
     {
@@ -81,7 +105,7 @@ class Evaluaciones
      * Set comentario
      *
      * @param string $comentario
-     * @return Evaluaciones
+     * @return Testimonios
      */
     public function setComentario($comentario)
     {
@@ -104,7 +128,7 @@ class Evaluaciones
      * Set activo
      *
      * @param string $activo
-     * @return Evaluaciones
+     * @return Testimonios
      */
     public function setActivo($activo)
     {
@@ -124,6 +148,52 @@ class Evaluaciones
     }
 
     /**
+     * Set nombre
+     *
+     * @param string $nombre
+     * @return Testimonios
+     */
+    public function setNombre($nombre)
+    {
+        $this->nombre = $nombre;
+
+        return $this;
+    }
+
+    /**
+     * Get nombre
+     *
+     * @return string 
+     */
+    public function getNombre()
+    {
+        return $this->nombre;
+    }
+
+    /**
+     * Set fecha
+     *
+     * @param string $fecha
+     * @return Testimonios
+     */
+    public function setFecha($fecha)
+    {
+        $this->fecha = $fecha;
+
+        return $this;
+    }
+
+    /**
+     * Get fecha
+     *
+     * @return string 
+     */
+    public function getFecha()
+    {
+        return $this->fecha;
+    }
+
+    /**
      * Get id
      *
      * @return integer 
@@ -137,7 +207,7 @@ class Evaluaciones
      * Set casaid
      *
      * @param \AppBundle\Entity\Casa $casaid
-     * @return Evaluaciones
+     * @return Testimonios
      */
     public function setCasaid(\AppBundle\Entity\Casa $casaid = null)
     {
@@ -154,5 +224,28 @@ class Evaluaciones
     public function getCasaid()
     {
         return $this->casaid;
+    }
+
+    /**
+     * Set puntosid
+     *
+     * @param \AppBundle\Entity\Puntos $puntosid
+     * @return Testimonios
+     */
+    public function setPuntosid(\AppBundle\Entity\Puntos $puntosid = null)
+    {
+        $this->puntosid = $puntosid;
+
+        return $this;
+    }
+
+    /**
+     * Get puntosid
+     *
+     * @return \AppBundle\Entity\Puntos 
+     */
+    public function getPuntosid()
+    {
+        return $this->puntosid;
     }
 }

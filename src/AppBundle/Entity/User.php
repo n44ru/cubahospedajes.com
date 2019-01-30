@@ -38,7 +38,7 @@ class User implements UserInterface
     /**
      * @var string
      *
-     * @ORM\Column(name="roles", type="string", length=25, nullable=false)
+     * @ORM\Column(name="role", type="string", length=25, nullable=false)
      */
     private $role;
 
@@ -53,11 +53,11 @@ class User implements UserInterface
 
     /**
      * User constructor.
-     * @param string $username
      */
     public function __construct()
     {
-        $this->salt = md5(new \DateTime());
+        $string = date('h:i:s');
+        $this->salt = md5($string);
     }
 
 

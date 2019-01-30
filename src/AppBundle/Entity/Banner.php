@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Banner
  *
- * @ORM\Table(name="Banner", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
+ * @ORM\Table(name="banner", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Banner
@@ -53,6 +53,13 @@ class Banner
      * @ORM\Column(name="texto", type="string", length=255, nullable=true)
      */
     private $texto;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="url", type="string", length=255, nullable=true)
+     */
+    private $url;
 
     /**
      * @var integer
@@ -201,6 +208,29 @@ class Banner
     public function getTexto()
     {
         return $this->texto;
+    }
+
+    /**
+     * Set url
+     *
+     * @param string $url
+     * @return Banner
+     */
+    public function setUrl($url)
+    {
+        $this->url = $url;
+
+        return $this;
+    }
+
+    /**
+     * Get url
+     *
+     * @return string 
+     */
+    public function getUrl()
+    {
+        return $this->url;
     }
 
     /**

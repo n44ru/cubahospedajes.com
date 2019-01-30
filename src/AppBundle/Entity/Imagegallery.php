@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Imagegallery
  *
- * @ORM\Table(name="Imagegallery", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})}, indexes={@ORM\Index(name="FKImagegalle968343", columns={"Casaid"}), @ORM\Index(name="FKImagegalle197815", columns={"Puntosid"})})
+ * @ORM\Table(name="imagegallery", uniqueConstraints={@ORM\UniqueConstraint(name="id", columns={"id"})})
  * @ORM\Entity
  */
 class Imagegallery
@@ -40,7 +40,7 @@ class Imagegallery
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Casa")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Casaid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Casaid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $casaid;
@@ -50,7 +50,7 @@ class Imagegallery
      *
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Puntos")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="Puntosid", referencedColumnName="id")
+     *   @ORM\JoinColumn(name="Puntosid", referencedColumnName="id", onDelete="CASCADE")
      * })
      */
     private $puntosid;
