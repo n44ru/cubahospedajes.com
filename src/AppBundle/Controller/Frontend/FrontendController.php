@@ -138,7 +138,7 @@ class FrontendController extends Controller
 //                if ($request->request->get('g-recaptcha-response')) {
 //                    $response = $request->request->get('g-recaptcha-response');
 //                    //your site secret key
-//                    $secret = '6LejqScUAAAAAFbT_1ye4P63jH9x3nWLDN4DPjU5';
+//                    $secret = '';
 //                    //get verify response data
 //                    $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
 //                    $responseData = json_decode($verifyResponse);
@@ -223,7 +223,7 @@ class FrontendController extends Controller
                 if ($request->request->get('g-recaptcha-response')) {
                     $response = $request->request->get('g-recaptcha-response');
                     //your site secret key
-                    $secret = '6LejqScUAAAAAFbT_1ye4P63jH9x3nWLDN4DPjU5';
+                    $secret = '';
                     //get verify response data
                     $verifyResponse = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret=' . $secret . '&response=' . $response);
                     $responseData = json_decode($verifyResponse);
